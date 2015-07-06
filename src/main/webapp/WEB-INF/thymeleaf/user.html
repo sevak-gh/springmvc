@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" 
+          th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}"  rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.js}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <form action="#" th:action="(${user.id} != null) ? @{|/users/${user.id}|} : @{/users/create}" th:object="${user}" class="form-horizontal" method="post">
+            <fieldset>
+                <legend>add new user</legend>
+                <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger">
+                    <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
+                </div>
+                <div class="form-group" >
+                    <label class="control-label col-sm-2">username: </label>
+                    <div class="col-sm-10">
+                       <input type="text" th:field="*{username}" class="form-control" th:errorclass="fieldError"/>
+                       <span class="label label-danger" th:errors="*{username}">[error]</span>
+                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">password: </label>
+                    <div class="col-sm-10">
+                        <input type="password" th:field="*{password}" class="form-control" th:errorclass="fieldError"/>
+                        <span class="help-inline" th:errors="*{password}">[error]</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">expire date: </label>
+                    <div class="col-sm-10">
+                        <textarea th:field="*{expireDate}" class="form-control" th:errorclass="fieldError"/>
+                        <span class="help-inline" th:errors="*{expireDate}">[error]</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2">
+                        <input  type="submit" value="submit" class="btn" />
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</body>
+
+</html>

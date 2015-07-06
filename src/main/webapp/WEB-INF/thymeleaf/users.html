@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" 
+          th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}"  rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.js}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>username</th>
+                <th>password</th>
+                <th>expire date</th>
+            </tr>
+            <tr th:each="user : ${users}">
+                <td><a href="#" th:href="@{|/users/${user.id}|}" th:text="${user.name}">username</a></td>
+                <td th:text="${user.password}">password</td>
+                <td th:text="${product.expireDate}">expire date</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <a href="#" th:href="@{/users/create}">add new user</a>    
+    </div>
+</body>
+
+</html>
