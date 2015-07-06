@@ -4,6 +4,7 @@ import com.infotech.ivr.reporting.domain.User;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +26,13 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
-        //TODO: find users list
+        //TODO: find users list from DB
         List<User> users = new ArrayList<User>();
+        User user = new User();
+        user.setUsername("jordan");
+        user.setPassword("123456");
+        user.setExpireDate(LocalDateTime.now());
+        users.add(user);
         model.addAttribute("users", users);
         return "users";
     }
@@ -52,6 +58,10 @@ public class UserController {
     public String initUpdateForm(@PathVariable("id") long id, Model model) {
         //TODO: find user by id
         User user = null;
+        user = new User();
+        user.setUsername("jordan");
+        user.setPassword("123456");
+        user.setExpireDate(LocalDateTime.now());
         model.addAttribute("user", user);
         return "user";
     }

@@ -19,9 +19,9 @@
                 <th>expire date</th>
             </tr>
             <tr th:each="user : ${users}">
-                <td><a href="#" th:href="@{|/users/${user.id}|}" th:text="${user.name}">username</a></td>
+                <td><a href="#" th:href="@{|/users/${user.id}|}" th:text="${user.username}">username</a></td>
                 <td th:text="${user.password}">password</td>
-                <td th:text="${product.expireDate}">expire date</td>
+                <td th:text="${user.expireDate}">expire date</td>
             </tr>
         </table>
     </div>

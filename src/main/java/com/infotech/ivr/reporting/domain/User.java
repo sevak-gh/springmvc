@@ -2,6 +2,8 @@ package com.infotech.ivr.reporting.domain;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * simple business object representing a user.
  *
@@ -13,6 +15,8 @@ public class User {
     private Long id;
     private String username;
     private String password;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime expireDate;
 
     public Long getId() {
