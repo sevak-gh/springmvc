@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" 
+          th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}"  rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.js}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>name</th>
+                <th>price</th>
+            </tr>
+            <tr th:each="product : ${products}">
+                <td><a href="#" th:href="@{|/products/${product.id}|}" th:text="${product.name}">name</a></td>
+                <td th:text="${product.price}">125.58</td>
+                <td th:text="${{product.dateTime}}">2015/08/30 12:00:00</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <a href="#" th:href="@{/products/create}">add new product</a>
+    </div>
+</body>
+
+</html>

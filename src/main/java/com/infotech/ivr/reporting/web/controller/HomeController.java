@@ -1,4 +1,4 @@
-package com.infotech.ivr.reporting.controller;
+package com.infotech.ivr.reporting.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

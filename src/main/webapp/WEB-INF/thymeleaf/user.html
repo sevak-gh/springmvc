@@ -12,39 +12,34 @@
 
 <body>
     <div class="container">
+        <br/>
         <form action="#" th:action="(${user.id} != null) ? @{|/users/${user.id}|} : @{/users/create}" th:object="${user}" class="form-horizontal" method="post">
-            <fieldset>
-                <legend>add new user</legend>
-                <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger">
-                    <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
-                </div>
-                <div class="form-group" >
-                    <label class="control-label col-sm-2">username: </label>
-                    <div class="col-sm-10">
-                       <input type="text" th:field="*{username}" class="form-control" th:errorclass="fieldError"/>
-                       <span class="label label-danger" th:errors="*{username}">[error]</span>
+                <div class="form-group" th:classappend="${#fields.hasErrors('username')} ? 'has-error'">
+                    <label class="control-label col-md-2">username: </label>
+                    <div class="col-md-10">
+                       <input type="text" th:field="*{username}" class="form-control"/>
+                       <span class="help-inline" th:errors="*{username}">[error]</span>
                      </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">password: </label>
-                    <div class="col-sm-10">
-                        <input type="password" th:field="*{password}" class="form-control" th:errorclass="fieldError"/>
+                <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? 'has-error'">
+                    <label class="control-label col-md-2">password: </label>
+                    <div class="col-md-10">
+                        <input type="password" th:field="*{password}" class="form-control"/>
                         <span class="help-inline" th:errors="*{password}">[error]</span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">expire date: </label>
-                    <div class="col-sm-10">
+                <div class="form-group" th:classappend="${#fields.hasErrors('expireDate')} ? 'has-error'">
+                    <label class="control-label col-md-2">expire date: </label>
+                    <div class="col-md-10">
                         <input type="text" th:field="*{expireDate}" class="form-control" th:errorclass="fieldError"/>
                         <span class="help-inline" th:errors="*{expireDate}">[error]</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-md-offset-2 col-md-10">
                         <input  type="submit" value="submit" class="btn btn-primary" />
                     </div>
                 </div>
-            </fieldset>
         </form>
     </div>
 </body>

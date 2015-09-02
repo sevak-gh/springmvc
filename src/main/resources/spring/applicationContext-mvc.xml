@@ -15,9 +15,9 @@
                            http://www.springframework.org/schema/mvc
                            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="com.infotech.ivr.reporting.controller"/>
+    <context:component-scan base-package="com.infotech.ivr.reporting.web"/>
 
-    <mvc:annotation-driven />
+    <mvc:annotation-driven conversion-service="conversionService"/>
     
     <mvc:resources mapping="/resources/**" location="/resources/" />
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
@@ -77,6 +77,15 @@
     </bean>
     <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
         <property name="templateResolver" ref="templateResolver" />
+    </bean>
+
+    <!-- coneversion/formatting -->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="formatters">
+            <set>
+                <bean class="com.infotech.ivr.reporting.web.conversion.LocalDateTimeFormatter" />
+            </set>
+        </property>
     </bean>
 
 </beans>

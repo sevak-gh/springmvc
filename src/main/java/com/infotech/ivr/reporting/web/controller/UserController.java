@@ -1,10 +1,11 @@
-package com.infotech.ivr.reporting.controller;
+package com.infotech.ivr.reporting.web.controller;
 
 import com.infotech.ivr.reporting.domain.User;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.BindingResult;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * controller for user form.
@@ -24,15 +26,23 @@ import org.springframework.validation.BindingResult;
 @RequestMapping("/users")
 public class UserController {
 
+    private static List<User> users = new ArrayList<User>() {{        
+        add(new User() {{
+            setUsername("jordan");
+            setPassword("123456");
+            setExpireDate(LocalDateTime.now());
+        }});        
+    }};
+
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
         //TODO: find users list from DB
-        List<User> users = new ArrayList<User>();
-        User user = new User();
-        user.setUsername("jordan");
-        user.setPassword("123456");
-        user.setExpireDate(LocalDateTime.now());
-        users.add(user);
+        //List<User> users = new ArrayList<User>();
+        //User user = new User();
+        //user.setUsername("jordan");
+        //user.setPassword("123456");
+        //user.setExpireDate(LocalDateTime.now());
+        //users.add(user);
         model.addAttribute("users", users);
         return "users";
     }
@@ -50,6 +60,7 @@ public class UserController {
             return "user";
         } else {
             //TODO: save new user
+            users.add(user);
             return "redirect:/users";
         }
     }
