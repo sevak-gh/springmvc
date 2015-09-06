@@ -9,9 +9,8 @@ import java.util.List;
  * repository for product domain object
  *
  */
-public interface ProductRepository {
+public interface ProductRepository extends ProductRepositoryCustom {
     List<Product> findAll();
     Product findById(long id);
     Product save(Product product);
 }
-
