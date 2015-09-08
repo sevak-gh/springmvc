@@ -11,7 +11,8 @@ import java.util.List;
  */
 public interface ProductService {
     List<Product> findAll();
+    List<Product> findAll(int currentPage, int pageSize);
     Product findById(long id);
     Product save(Product product);
+    long getCount();
 }
-

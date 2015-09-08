@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -36,11 +37,26 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    public String list(@RequestParam(value="page", defaultValue="1") int page,
+                        @RequestParam(value="pageSize", defaultValue="10") int pageSize,
+                        Model model) {
+        List<Product> products = productService.findAll(page, pageSize);
+        long count = productService.getCount();
+        model.addAttribute("products", products);
+        model.addAttribute("count", count);
+        model.addAttribute("page", page);
+        model.addAttribute("pageSize", pageSize);
+        return "products";
+    }
+
+    /*
+    @RequestMapping("method = RequestMethod.GET)
     public String list(Model model) {
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
         return "products";
     }
+    */
 
     @RequestMapping(value="/create", method = RequestMethod.GET)
     public String initCreateForm(Model model) {

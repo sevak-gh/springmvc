@@ -17,10 +17,15 @@ public class SpringDataJpaProductRepositoryImpl implements ProductRepositoryCust
     @PersistenceContext
     EntityManager em;
 
+    /**
+     * get paged list 
+     * currentPage numbered from 1
+     *
+     */
     @Override
     public List<Product> findAll(int currentPage, int pageSize) {
         return em.createQuery("SELECT product from Product product", Product.class)
-                    .setFirstResult(currentPage)
+                    .setFirstResult((currentPage-1) * pageSize)
                     .setMaxResults(pageSize)
                     .getResultList();
     }

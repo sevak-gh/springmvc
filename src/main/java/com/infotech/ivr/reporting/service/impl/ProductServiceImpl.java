@@ -28,10 +28,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public List<Product> findAll() {
-        //return productRepository.findAll();
-        return productRepository.findAll(1,5);
+        return productRepository.findAll();
     }
     
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findAll(int currentPage, int pageSize) {
+        return productRepository.findAll(currentPage, pageSize);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Product findById(long id) {
@@ -42,5 +47,11 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public Product save(Product product) {
         return productRepository.save(product);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long getCount() {
+        return productRepository.count();
     }
 }
