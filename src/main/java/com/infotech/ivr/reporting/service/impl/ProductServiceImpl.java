@@ -1,10 +1,12 @@
 package com.infotech.ivr.reporting.service.impl;
 
 import com.infotech.ivr.reporting.domain.Product;
+import com.infotech.ivr.reporting.domain.ProductReportFilter;
 import com.infotech.ivr.reporting.service.ProductService;
 import com.infotech.ivr.reporting.repository.ProductRepository;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public List<Product> findAll(int currentPage, int pageSize) {
-        return productRepository.findAll(currentPage, pageSize);
+        //return productRepository.findAll(currentPage, pageSize);
+        ProductReportFilter filter = new ProductReportFilter();
+        //filter.setPrice(BigDecimal.valueOf(57));
+        //filter.setName("کت");
+        return productRepository.report(filter, currentPage, pageSize);
     }
 
     @Override
