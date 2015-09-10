@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * controller for product form.
@@ -28,6 +30,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Controller
 @RequestMapping("/products")
 public class ProductController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService productService;
 
@@ -40,6 +44,7 @@ public class ProductController {
     public String list(@RequestParam(value="page", defaultValue="1") int page,
                         @RequestParam(value="pageSize", defaultValue="10") int pageSize,
                         Model model) {
+        LOG.debug("getting products list");
         List<Product> products = productService.findAll(page, pageSize);
         long count = productService.getCount();
         model.addAttribute("products", products);
@@ -67,6 +72,7 @@ public class ProductController {
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
     public String processCreateForm(@ModelAttribute("product") Product product, BindingResult result) {
+        LOG.debug("product received in controller: {}", product.toString());
         if (result.hasErrors()) {
             return "product";
         } else {

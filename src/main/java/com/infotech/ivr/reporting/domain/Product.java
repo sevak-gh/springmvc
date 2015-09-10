@@ -72,6 +72,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return String.format("Product[id:%d, name:%s, price:%d]", id, name, price);
+        return String.format("Product[id:%d, name:%s, price:%s]", id, name, price.toString());
     }
 }
