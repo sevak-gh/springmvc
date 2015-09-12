@@ -7,6 +7,7 @@ import com.infotech.ivr.reporting.repository.ProductRepository;
 
 import java.util.List;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
         ProductReportFilter filter = new ProductReportFilter();
         //filter.setPrice(BigDecimal.valueOf(57));
         //filter.setName("کت");
+        filter.setFromDate(LocalDateTime.of(2015, 9, 1, 1, 0, 0));
         return productRepository.report(filter, currentPage, pageSize);
     }
 

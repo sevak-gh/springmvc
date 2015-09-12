@@ -32,7 +32,7 @@ public class ProductReportFilter {
         this.price = price;
     }
 
-    public LocalDateTime getFfromDate() {
+    public LocalDateTime getFromDate() {
         return fromDate;
     }
 
