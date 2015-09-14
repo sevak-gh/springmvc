@@ -44,20 +44,20 @@ public class UserController {
         //user.setExpireDate(LocalDateTime.now());
         //users.add(user);
         model.addAttribute("users", users);
-        return "users";
+        return "user/userList";
     }
 
     @RequestMapping(value="/create", method = RequestMethod.GET)
     public String initCreateForm(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        return "user";
+        return "user/userCreateUpdate";
     }
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
     public String processCreateForm(@ModelAttribute("user") User user, BindingResult result) {
         if (result.hasErrors()) {
-            return "user";
+            return "user/userCreateUpdate";
         } else {
             //TODO: save new user
             users.add(user);
@@ -74,13 +74,13 @@ public class UserController {
         user.setPassword("123456");
         user.setExpireDate(LocalDateTime.now());
         model.addAttribute("user", user);
-        return "user";
+        return "user/userCreateUpdate";
     }
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
     public String processUpdateForm(@ModelAttribute("user") User user, BindingResult result) {
         if (result.hasErrors()) {
-            return "user";
+            return "user/userCreateUpdate";
         } else {
             //TODO: update user
             return "redirect:/users";

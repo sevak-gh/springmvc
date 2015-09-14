@@ -16,6 +16,7 @@
             <tr>
                 <th>name</th>
                 <th>price</th>
+                <th>DateTime</th>
             </tr>
             <tr th:each="product : ${products}">
                 <td><a href="#" th:href="@{|/products/${product.id}|}" th:text="${product.name}">name</a></td>

@@ -1,6 +1,7 @@
 package com.infotech.ivr.reporting.web.controller;
 
 import com.infotech.ivr.reporting.domain.Product;
+import com.infotech.ivr.reporting.domain.ProductReportFilter;
 import com.infotech.ivr.reporting.service.ProductService;
 
 import java.util.List;
@@ -32,6 +33,8 @@ import org.slf4j.LoggerFactory;
 public class ProductController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProductController.class);
+    private static final int DEFAULT_PAGE_SIZE = 10;
+
 
     private final ProductService productService;
 
@@ -51,30 +54,21 @@ public class ProductController {
         model.addAttribute("count", count);
         model.addAttribute("page", page);
         model.addAttribute("pageSize", pageSize);
-        return "products";
+        return "product/productList";
     }
-
-    /*
-    @RequestMapping("method = RequestMethod.GET)
-    public String list(Model model) {
-        List<Product> products = productService.findAll();
-        model.addAttribute("products", products);
-        return "products";
-    }
-    */
 
     @RequestMapping(value="/create", method = RequestMethod.GET)
     public String initCreateForm(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
-        return "product";
+        return "product/productCreateUpdate";
     }
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
     public String processCreateForm(@ModelAttribute("product") Product product, BindingResult result) {
         LOG.debug("product received in controller: {}", product.toString());
         if (result.hasErrors()) {
-            return "product";
+            return "product/productCreateUpdate";
         } else {
             productService.save(product);
             return "redirect:/products";
@@ -85,16 +79,39 @@ public class ProductController {
     public String initUpdateForm(@PathVariable("id") long id, Model model) {
         Product product = productService.findById(id);
         model.addAttribute("product", product);
-        return "product";
+        return "product/productCreateUpdate";
     }
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
     public String processUpdateForm(@ModelAttribute("product") Product product, BindingResult result) {
         if (result.hasErrors()) {
-            return "product";
+            return "product/productCreateUpdate";
         } else {
             productService.save(product);
             return "redirect:/products";
         }
+    }
+
+    @RequestMapping(value="/report", method = RequestMethod.GET)
+    public String report(Model model) {
+        model.addAttribute("productReportFilter", new ProductReportFilter());
+        model.addAttribute("count", 0);
+        model.addAttribute("page", 1);
+        model.addAttribute("pageSize", DEFAULT_PAGE_SIZE);
+       return "product/productReport";
+    }
+
+    @RequestMapping(value="/report", method = RequestMethod.POST)
+    public String report(@ModelAttribute("productReportFilter") ProductReportFilter filter, BindingResult result, 
+                         @RequestParam(value="page", defaultValue="1") int page,
+                         @RequestParam(value="pageSize", defaultValue="10") int pageSize,
+                         Model model) {
+        List<Product> products = productService.report(filter, page, pageSize);
+        long count = productService.reportCount(filter);
+        model.addAttribute("products", products);
+        model.addAttribute("count", count);
+        model.addAttribute("page", page);
+        model.addAttribute("pageSize", pageSize);
+        return "product/productReport";
     }
 }

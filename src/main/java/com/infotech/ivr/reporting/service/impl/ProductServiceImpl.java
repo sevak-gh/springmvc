@@ -37,12 +37,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public List<Product> findAll(int currentPage, int pageSize) {
-        //return productRepository.findAll(currentPage, pageSize);
-        ProductReportFilter filter = new ProductReportFilter();
-        //filter.setPrice(BigDecimal.valueOf(57));
-        //filter.setName("کت");
-        filter.setFromDate(LocalDateTime.of(2015, 9, 1, 1, 0, 0));
-        return productRepository.report(filter, currentPage, pageSize);
+        return productRepository.findAll(currentPage, pageSize);
     }
 
     @Override
@@ -61,5 +56,17 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public long getCount() {
         return productRepository.count();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> report(ProductReportFilter filter, int currentPage, int pageSize) {
+        return productRepository.report(filter, currentPage, pageSize);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long reportCount(ProductReportFilter filter) {
+        return productRepository.reportCount(filter);
     }
 }
