@@ -22,7 +22,7 @@ public class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
 
     @Override
     public LocalDateTime parse(String formatted, Locale locale) throws ParseException {
-        if (true) { // local = persian
+        if (locale.getLanguage().equalsIgnoreCase("fa")) { // local = persian
             String[] tokens = formatted.split("/| |:");
             if ((tokens == null) || (tokens.length != 6)) {
                 throw new ConversionFailedException(null, null, null, null);
@@ -44,7 +44,7 @@ public class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
 
     @Override
     public String print(LocalDateTime dateTime, Locale locale) {
-        if (true) {   // locale == "persian" 
+        if (locale.getLanguage().equalsIgnoreCase("fa")) {   // locale == "persian" 
             Calendar calendar = Calendar.getInstance(new ULocale("fa_IR@calendar=persian"));
             Date dt = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant()); 
             calendar.setTime(dt);

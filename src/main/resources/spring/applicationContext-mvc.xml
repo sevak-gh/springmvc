@@ -15,10 +15,11 @@
                            http://www.springframework.org/schema/mvc
                            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+    <!-- spring mvc anotation processing  -->
     <context:component-scan base-package="com.infotech.ivr.reporting.web"/>
-
     <mvc:annotation-driven conversion-service="conversionService"/>
     
+    <!--  static resources   -->
     <mvc:resources mapping="/resources/**" location="/resources/" />
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
 
@@ -32,6 +33,7 @@
         <property name="defaultLocale" value="en"/>
     </bean>
 
+    <!-- spring message source  -->
     <bean id= "messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename" value="messages/messages"/> 
     </bean>

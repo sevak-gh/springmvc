@@ -1,6 +1,7 @@
 package com.infotech.ivr.reporting.web.controller;
 
 import com.infotech.ivr.reporting.domain.Product;
+import com.infotech.ivr.reporting.domain.SortExpression;
 import com.infotech.ivr.reporting.domain.ProductReportFilter;
 import com.infotech.ivr.reporting.service.ProductService;
 
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import javax.validation.Valid;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +47,8 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(@RequestParam(value="page", defaultValue="1") int page,
-                        @RequestParam(value="pageSize", defaultValue="10") int pageSize,
-                        Model model) {
+                       @RequestParam(value="pageSize", defaultValue="10") int pageSize,
+                       Model model) {
         LOG.debug("getting products list");
         List<Product> products = productService.findAll(page, pageSize);
         long count = productService.getCount();
@@ -58,15 +60,15 @@ public class ProductController {
     }
 
     @RequestMapping(value="/create", method = RequestMethod.GET)
-    public String initCreateForm(Model model) {
+    public String initCreateForm(Model model, HttpSession session) {
+        LOG.debug("session: {}", session);
         Product product = new Product();
         model.addAttribute("product", product);
         return "product/productCreateUpdate";
     }
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
-    public String processCreateForm(@ModelAttribute("product") Product product, BindingResult result) {
-        LOG.debug("product received in controller: {}", product.toString());
+    public String processCreateForm(@Valid Product product, BindingResult result) {
         if (result.hasErrors()) {
             return "product/productCreateUpdate";
         } else {
@@ -83,7 +85,7 @@ public class ProductController {
     }
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
-    public String processUpdateForm(@ModelAttribute("product") Product product, BindingResult result) {
+    public String processUpdateForm(@Valid Product product, BindingResult result) {
         if (result.hasErrors()) {
             return "product/productCreateUpdate";
         } else {
@@ -98,20 +100,30 @@ public class ProductController {
         model.addAttribute("count", 0);
         model.addAttribute("page", 1);
         model.addAttribute("pageSize", DEFAULT_PAGE_SIZE);
+        model.addAttribute("sortField", "dateTime");
+        model.addAttribute("isSortDirectionAsc", true);
        return "product/productReport";
     }
 
     @RequestMapping(value="/report", method = RequestMethod.POST)
-    public String report(@ModelAttribute("productReportFilter") ProductReportFilter filter, BindingResult result, 
+    public String report(ProductReportFilter filter, BindingResult result, 
                          @RequestParam(value="page", defaultValue="1") int page,
                          @RequestParam(value="pageSize", defaultValue="10") int pageSize,
+                         @RequestParam(value="sortField", required=false) String sortField,
+                         @RequestParam(value="isSortDirectionAsc", defaultValue="true") boolean isSortDirectionAsc,
                          Model model) {
-        List<Product> products = productService.report(filter, page, pageSize);
+        if (sortField == null) {
+            // default sort field
+            sortField = "dateTime"; 
+        }
+        List<Product> products = productService.report(filter, page, pageSize, sortField, isSortDirectionAsc);
         long count = productService.reportCount(filter);
         model.addAttribute("products", products);
         model.addAttribute("count", count);
         model.addAttribute("page", page);
         model.addAttribute("pageSize", pageSize);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("isSortDirectionAsc", isSortDirectionAsc);
         return "product/productReport";
     }
 }

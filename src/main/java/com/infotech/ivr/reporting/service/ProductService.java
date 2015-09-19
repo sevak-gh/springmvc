@@ -1,6 +1,7 @@
 package com.infotech.ivr.reporting.service;
 
 import com.infotech.ivr.reporting.domain.Product;
+import com.infotech.ivr.reporting.domain.SortExpression;
 import com.infotech.ivr.reporting.domain.ProductReportFilter;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public interface ProductService {
     Product findById(long id);
     Product save(Product product);
     long getCount();
-    List<Product> report(ProductReportFilter filter, int currentPage, int pageSize);
+    List<Product> report(ProductReportFilter filter, int currentPage, int pageSize, List<SortExpression> sortExpressions);
+    List<Product> report(ProductReportFilter filter, int currentPage, int pageSize, String sortField, boolean isAsc);
     long reportCount(ProductReportFilter filter);
 }

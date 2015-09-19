@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="headTagCalendar">
+    <!-- import the Jalali Date Class script -->
+    <script type="text/javascript" src="../../../resources/js/jalali.js" th:src="@{/resources/js/jalali.js}"></script>
+    <script type="text/javascript" src="../../../resources/js/calendar.js" th:src="@{/resources/js/calendar.js}"></script>
+    <script type="text/javascript" src="../../../resources/js/calendar-setup.js" th:src="@{/resources/js/calendar-setup.js}"></script>
+    <script type="text/javascript" src="../../../resources/js/lang/calendar-fa.js" 
+                                   th:src="@{/resources/js/calendar-fa.js}" 
+                                   th:if="${#locale.language == 'fa'}" ></script>
+    <script type="text/javascript" src="../../../resources/js/lang/calendar-en.js" 
+                                   th:src="@{/resources/js/calendar-en.js}" 
+                                   th:if="${#locale.language == 'en'}" ></script>
+    <link href="../../../resources/css/calendar-blue.css" 
+          th:href="@{/resources/css/calendar-blue.css}"  rel="stylesheet"/>
+</head>
+<body>
+</body>
+</html>
+

@@ -3,28 +3,45 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" 
-          th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}"  rel="stylesheet"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.js}"></script>
+    <meta th:include="fragments/headTag :: headTag" th:remove="tag"/>
+    <meta th:include="fragments/headTagCalendar :: headTagCalendar" th:remove="tag"/>
 </head>
 
 <body>
 
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
 
 $(document).ready(function(){
    $("ul.pagination a").click(function(e) {
         e.preventDefault();
         $("#page").val($(this).attr("id"));
+        $("#pageSize").val([[${pageSize}]]);
         $("form").submit();
+    });
+
+    $("#pageSizeSelect").change(function(){
+        $("#pageSize").val($(this).val());
+        $("#page").val([[${page}]]);
+        $("form").submit();
+    });   
+
+    $("table th").click(function(){
+        if ($(this).text() == "DateTime") {
+            $("#page").val([[${page}]]);
+            $("#pageSize").val([[${pageSize}]]);
+            $("#sortField").val([[${sortField}]]);
+            $("#isSortDirectionAsc").val([[${!isSortDirectionAsc}]]);
+            $("form").submit();
+        }
     }); 
+
 });
 </script>
 
-    <div class="container">
-        <br/>
+    <div class="container" th:dir="${#locale.language == 'fa'}? 'rtl'">
+        <div th:include="/fragments/header :: header">
+        </div>
+       <br/>
         <form action="#" th:action="@{/products/report}" th:object="${productReportFilter}" class="form-horizontal" method="post">
                 <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error'">
                     <label class="control-label col-md-2">name: </label>
@@ -45,6 +62,16 @@ $(document).ready(function(){
                     <div class="col-md-10">
                         <input type="text" th:field="*{fromDate}" class="form-control" th:errorclass="fieldError"/>
                         <span class="help-inline" th:errors="*{fromDate}">[error]</span>
+                            <script type="text/javascript" th:inline="javascript">
+                                Calendar.setup({
+                                                inputField     :    "fromDate",   // id of the input field
+                                                button         :    "fromDate",   // trigger for the calendar (button ID)
+                                                showsTime      : true,     
+                                                ifFormat       :    "%Y/%m/%d %H:%M:%S",       // format of the input field
+                                                dateType       :    [[${#locale.language == 'fa'} ? 'jalali' : 'gregorian']],
+                                                weekNumbers    : false
+                                            });
+                            </script>
                     </div>
                 </div>
                 <div class="form-group" th:classappend="${#fields.hasErrors('toDate')} ? 'has-error'">
@@ -52,6 +79,17 @@ $(document).ready(function(){
                     <div class="col-md-10">
                         <input type="text" th:field="*{toDate}" class="form-control" th:errorclass="fieldError"/>
                         <span class="help-inline" th:errors="*{toDate}">[error]</span>
+                            <script type="text/javascript" th:inline="javascript">
+                                Calendar.setup({
+                                                inputField     :    "toDate",   // id of the input field
+                                                button         :    "toDate",   // trigger for the calendar (button ID)
+                                                showsTime      : true,     
+                                                ifFormat       :    "%Y/%m/%d %H:%M:%S",       // format of the input field
+                                                dateType       :    [[${#locale.language == 'fa'} ? 'jalali' : 'gregorian']],
+                                                weekNumbers    : false
+                                            });
+                            </script>
+
                     </div>
                 </div>
                <div class="form-group">
@@ -61,6 +99,8 @@ $(document).ready(function(){
                 </div>
                 <input type="hidden" name="page" id="page" value="1" />
                 <input type="hidden" name="pageSize" id="pageSize" value="10" />
+                <input type="hidden" name="sortField" id="sortField" value="dateTime" th:value="${sortField}"/>
+                <input type="hidden" name="isSortDirectionAsc" id="isSortDirectionAsc" value="true" th:value="${isSortDirectionAsc}"  />
         </form>
         <table class="table table-bordered table-striped">
             <tr>
@@ -97,6 +137,12 @@ $(document).ready(function(){
             <a th:id="${(count/pageSize)+1}" href="#">&#062;&#062;</a>
           </li>
         </ul>
+        <select id="pageSizeSelect">
+            <option value="5" th:selected="${pageSize == 5}">5</option>
+            <option value="10" th:selected="${pageSize == 10}">10</option>
+            <option value="15" th:selected="${pageSize == 15}">15</option>
+            <option value="20" th:selected="${pageSize == 20}">20</option>
+        </select>
     </div>
 </body>
 

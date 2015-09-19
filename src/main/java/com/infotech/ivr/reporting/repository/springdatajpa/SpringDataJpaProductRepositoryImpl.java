@@ -1,6 +1,7 @@
 package com.infotech.ivr.reporting.repository.springdatajpa;
 
 import com.infotech.ivr.reporting.domain.Product;
+import com.infotech.ivr.reporting.domain.SortExpression;
 import com.infotech.ivr.reporting.domain.ProductReportFilter;
 import com.infotech.ivr.reporting.repository.ProductRepositoryCustom;
 
@@ -15,6 +16,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Order;
 
 
 /**
@@ -44,7 +46,7 @@ public class SpringDataJpaProductRepositoryImpl implements ProductRepositoryCust
      * get product report 
      */
     @Override
-    public List<Product> report(ProductReportFilter filter, int currentPage, int pageSize) {
+    public List<Product> report(ProductReportFilter filter, int currentPage, int pageSize, List<SortExpression> sortExpressions) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = builder.createQuery(Product.class);
         Root<Product> product = criteria.from(Product.class);
@@ -62,6 +64,17 @@ public class SpringDataJpaProductRepositoryImpl implements ProductRepositoryCust
             predicates.add(builder.lessThanOrEqualTo(product.<LocalDateTime>get("dateTime"), filter.getToDate()));
         }
         criteria.where(builder.and(predicates.toArray(new Predicate[0])));
+        List<Order> orderList = new ArrayList<Order>();
+        if (sortExpressions != null) {
+            for (SortExpression sortExpression : sortExpressions) {
+                if (sortExpression.getDirection() == SortExpression.Direction.ASC) {
+                    orderList.add(builder.asc(product.get(sortExpression.getField())));
+                } else {
+                    orderList.add(builder.desc(product.get(sortExpression.getField())));
+                }
+            }
+            criteria.orderBy(orderList.toArray(new Order[0]));
+        }
         return em.createQuery(criteria)
                  .setFirstResult((currentPage-1) * pageSize)
                  .setMaxResults(pageSize)

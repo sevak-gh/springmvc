@@ -3,15 +3,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" 
-          th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}"  rel="stylesheet"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.js}"></script>
+    <meta th:include="fragments/headTag :: headTag" th:remove="tag"/>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" th:dir="${#locale.language == 'fa'}? 'rtl'">
+        <div th:include="/fragments/header :: header">
+        </div>
         <table class="table table-bordered table-striped">
             <tr>
                 <th>name</th>

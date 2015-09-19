@@ -3,6 +3,7 @@ package com.infotech.ivr.reporting.domain;
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -31,6 +32,7 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
     @Max(10000)    
     @Column(name = "price", nullable = false)
     private BigDecimal price;
