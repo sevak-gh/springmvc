@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.slf4j.Logger;
@@ -125,5 +127,41 @@ public class ProductController {
         model.addAttribute("sortField", sortField);
         model.addAttribute("isSortDirectionAsc", isSortDirectionAsc);
         return "product/productReport";
+    }
+    
+    @RequestMapping(value="/reportj", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Product> reportJson(ProductReportFilter filter, BindingResult result, 
+                         @RequestParam(value="page", defaultValue="1") int page,
+                         @RequestParam(value="pageSize", defaultValue="10") int pageSize,
+                         @RequestParam(value="sortField", required=false) String sortField,
+                         @RequestParam(value="isSortDirectionAsc", defaultValue="true") boolean isSortDirectionAsc,
+                         Model model) {
+        if (sortField == null) {
+            // default sort field
+            sortField = "dateTime"; 
+        }
+        LOG.debug("productReportFilter: {}", filter.toString());
+        List<Product> products = productService.report(filter, page, pageSize, sortField, isSortDirectionAsc);
+        //long count = productService.reportCount(filter);
+        //model.addAttribute("products", products);
+        //model.addAttribute("count", count);
+        //model.addAttribute("page", page);
+        //model.addAttribute("pageSize", pageSize);
+        //model.addAttribute("sortField", sortField);
+        //model.addAttribute("isSortDirectionAsc", isSortDirectionAsc);
+        //return "product/productReport";
+        return products;
+    }    
+
+    @RequestMapping(value="/test", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Product> go(Product product) {
+        //return productService.findById(id);
+        List<Product> products = new ArrayList<Product>();
+        products.add(product);
+        products.add(product);
+        products.add(product);
+        return products;
     }
 }

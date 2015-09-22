@@ -47,4 +47,13 @@ public class ProductReportFilter {
     public void setToDate(LocalDateTime toDate) {
         this.toDate = toDate;
     }
+
+    @Override
+    public String toString() {
+        return String.format("ProductReportFilter[name=%s,price=%s,fromDate=%s,toDate=%s]", 
+                                name, 
+                                String.valueOf(price), 
+                                String.valueOf(fromDate), 
+                                String.valueOf(toDate));
+    }
 }

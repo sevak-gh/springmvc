@@ -12,9 +12,9 @@
         </div>
         <table class="table table-bordered table-striped">
             <tr>
-                <th>name</th>
-                <th>price</th>
-                <th>DateTime</th>
+                <th th:text="#{product.name}">name</th>
+                <th th:text="#{product.price}">price</th>
+                <th th:text="#{product.dateTime}">DateTime</th>
             </tr>
             <tr th:each="product : ${products}">
                 <td><a href="#" th:href="@{|/products/${product.id}|}" th:text="${product.name}">name</a></td>
@@ -45,11 +45,11 @@
                 <a href="#" th:href="@{/products(page=${(count/pageSize)+1},pageSize=${pageSize})}">&#062;&#062;</a>
             </li>
         </ul>
-    </div>
-    <div>
-        <a href="#" th:href="@{/products/create}">add new product</a>
+     <div>
+        <a href="#" th:href="@{/products/create}" th:text="#{product.add.message}">add new product</a>
     </div>
     <span th:text="${page}">page</span>, <span th:text="${pageSize}">pageSize</span>
+   </div>
 </body>
 
 </html>

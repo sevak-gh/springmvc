@@ -1,5 +1,7 @@
 package com.infotech.ivr.reporting.domain;
 
+import com.infotech.ivr.reporting.util.JsonLocalDateTimeSerializer;
+
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
 import javax.validation.constraints.Max;
@@ -74,6 +76,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return String.format("Product[id:%d, name:%s, price:%s]", id, name, price.toString());
+        return String.format("Product[id:%d, name:%s, price:%s]", id, name, String.valueOf(price));
     }
 }
