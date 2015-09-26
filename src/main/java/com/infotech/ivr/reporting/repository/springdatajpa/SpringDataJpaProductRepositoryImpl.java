@@ -3,7 +3,6 @@ package com.infotech.ivr.reporting.repository.springdatajpa;
 import com.infotech.ivr.reporting.domain.Product;
 import com.infotech.ivr.reporting.domain.SortExpression;
 import com.infotech.ivr.reporting.domain.ProductReportFilter;
-import com.infotech.ivr.reporting.repository.ProductRepositoryCustom;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import javax.persistence.criteria.Order;
  * custom implementation for Product repository.
  *
  */
-public class SpringDataJpaProductRepositoryImpl implements ProductRepositoryCustom {
+public class SpringDataJpaProductRepositoryImpl {
 
     @PersistenceContext
     EntityManager em;
@@ -34,7 +33,6 @@ public class SpringDataJpaProductRepositoryImpl implements ProductRepositoryCust
      * currentPage numbered from 1
      *
      */
-    @Override
     public List<Product> findAll(int currentPage, int pageSize) {
         return em.createQuery("SELECT product from Product product", Product.class)
                     .setFirstResult((currentPage-1) * pageSize)
@@ -45,7 +43,6 @@ public class SpringDataJpaProductRepositoryImpl implements ProductRepositoryCust
     /**
      * get product report 
      */
-    @Override
     public List<Product> report(ProductReportFilter filter, int currentPage, int pageSize, List<SortExpression> sortExpressions) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = builder.createQuery(Product.class);
@@ -84,7 +81,6 @@ public class SpringDataJpaProductRepositoryImpl implements ProductRepositoryCust
     /**
      * get product report count 
      */
-    @Override
     public long reportCount(ProductReportFilter filter) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
