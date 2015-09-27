@@ -19,7 +19,7 @@ import com.ibm.icu.util.ULocale;
 public class LocalDateTimeConverterFormatter {
 
     public static LocalDateTime parse(String formatted, Locale locale, String format) throws ParseException {
-        if (locale.getLanguage().equalsIgnoreCase("fa")) { // local = persian
+        if (locale.getLanguage().equalsIgnoreCase("fa")) { // locale = persian
             String[] tokens = formatted.split("/| |:");
             if ((tokens == null) || (tokens.length != 6)) {
                 throw new ParseException("LocalDateTime in invalid format", 0);

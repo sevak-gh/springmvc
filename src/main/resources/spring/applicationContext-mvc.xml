@@ -18,13 +18,15 @@
     <!-- spring mvc anotation processing  -->
     <context:component-scan base-package="com.infotech.ivr.reporting.web"/>
     <mvc:annotation-driven conversion-service="conversionService">
+        <!--
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper" ref="jacksonObjectMapper" />
             </bean>
         </mvc:message-converters>
+        -->
     </mvc:annotation-driven>
-    <bean id="jacksonObjectMapper" class="com.infotech.ivr.reporting.util.JacksonObjectMapper" />
+   <!-- <bean id="jacksonObjectMapper" class="com.infotech.ivr.reporting.util.JacksonObjectMapper" />-->
     
     <!--  static resources   -->
     <mvc:resources mapping="/resources/**" location="/resources/" />
@@ -53,6 +55,29 @@
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="order" value="1" />
         <property name="contentNegotiationManager" ref="cnManager"/>
+        <property name="defaultViews">
+            <list>
+
+                <!-- json view   -->
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">          
+                   <!-- <property name="objectMapper" ref="jacksonObjectMapper"/>-->
+                </bean>
+
+                <!-- JAXB XML View -->
+                <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+                    <constructor-arg>
+                        <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+                            <property name="classesToBeBound">
+                                <list>
+                                    <value>com.infotech.ivr.reporting.domain.Product</value>
+                                </list>
+                            </property>
+                        </bean>
+                    </constructor-arg>
+                </bean>
+
+            </list>
+        </property>
     </bean>
 
     <!-- only path extension is taken into account -->

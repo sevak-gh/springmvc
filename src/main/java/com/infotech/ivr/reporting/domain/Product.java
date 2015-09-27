@@ -1,5 +1,6 @@
 package com.infotech.ivr.reporting.domain;
 
+import com.infotech.ivr.reporting.util.XmlLocalDateTimeAdapter;
 import com.infotech.ivr.reporting.util.JsonLocalDateTimeSerializer;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty; 
 
 /**
@@ -23,6 +29,8 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Entity
 @Table(name = "product")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Product {
 
     @Id
@@ -40,6 +48,8 @@ public class Product {
     private BigDecimal price;
 
     @Column(name = "dt")
+    @XmlJavaTypeAdapter(XmlLocalDateTimeAdapter.class)
+    @JsonSerialize(using=JsonLocalDateTimeSerializer.class)
     private LocalDateTime dateTime;
 
     public Long getId() {
