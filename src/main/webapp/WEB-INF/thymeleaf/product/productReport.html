@@ -49,13 +49,13 @@ $(document).ready(function(){
         */
         $.ajax({
             type: "POST",
-            url: [[@{/products/reportj}]],
+            url: [[@{/products/report.json}]],
    //         contentType: "application/json; charset=utf-8",
             //data: JSON.stringify(postData),
             data: $(this).serialize(),
             success: function (data) {
                           $("table tbody").html("");
-                          $.each(data, function (index, item) {
+                          $.each(data.products, function (index, item) {
                               tr = "<tr><td>" + item.name + "</td><td>" + item.price + "</td><td>" + item.dateTime +  "</td></tr>";
                               $("table tbody").append(tr);                                        
                           });

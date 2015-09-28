@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://jax-ws.dev.java.net/spring/core
@@ -12,21 +13,14 @@
                            http://www.springframework.org/schema/context/spring-context.xsd
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/oxm
+                           http://www.springframework.org/schema/oxm/spring-oxm.xsd
                            http://www.springframework.org/schema/mvc
                            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- spring mvc anotation processing  -->
     <context:component-scan base-package="com.infotech.ivr.reporting.web"/>
-    <mvc:annotation-driven conversion-service="conversionService">
-        <!--
-        <mvc:message-converters>
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="objectMapper" ref="jacksonObjectMapper" />
-            </bean>
-        </mvc:message-converters>
-        -->
-    </mvc:annotation-driven>
-   <!-- <bean id="jacksonObjectMapper" class="com.infotech.ivr.reporting.util.JacksonObjectMapper" />-->
+    <mvc:annotation-driven conversion-service="conversionService" />
     
     <!--  static resources   -->
     <mvc:resources mapping="/resources/**" location="/resources/" />
@@ -59,21 +53,11 @@
             <list>
 
                 <!-- json view   -->
-                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">          
-                   <!-- <property name="objectMapper" ref="jacksonObjectMapper"/>-->
-                </bean>
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>          
 
-                <!-- JAXB XML View -->
+                <!-- XML View -->
                 <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
-                    <constructor-arg>
-                        <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-                            <property name="classesToBeBound">
-                                <list>
-                                    <value>com.infotech.ivr.reporting.domain.Product</value>
-                                </list>
-                            </property>
-                        </bean>
-                    </constructor-arg>
+                    <property name="marshaller" ref="marshaller" />
                 </bean>
 
             </list>
@@ -121,6 +105,10 @@
             </set>
         </property>
     </bean>
+
+    <oxm:jaxb2-marshaller id="marshaller">
+        <oxm:class-to-be-bound name="com.infotech.ivr.reporting.domain.Product"/>
+    </oxm:jaxb2-marshaller>
 
 </beans>
 
