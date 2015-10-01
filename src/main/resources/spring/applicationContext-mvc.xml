@@ -47,8 +47,24 @@
     </bean>
 
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-        <property name="order" value="1" />
         <property name="contentNegotiationManager" ref="cnManager"/>
+        <property name="viewResolvers">
+            <list>
+    
+                <!-- for export views such as pdf,excel... -->
+                <bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+                    <property name="order" value="1"/>
+                </bean>
+
+                <!--    Thymeleaf view   -->
+                <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+                    <property name="templateEngine" ref="templateEngine" />
+                    <property name="characterEncoding" value="UTF-8" />
+                    <property name="order" value="2"/>
+                </bean>
+
+           </list>
+        </property>
         <property name="defaultViews">
             <list>
 
@@ -76,16 +92,13 @@
                 <entry key="xml" value="application/xml" />
                 <entry key="atom" value="application/atom+xml" />
                 <entry key="json" value="application/json" />
+                <entry key="pdf" value="application/pdf" />
             </map>
         </property>
     </bean>
 
-    <!--    Thymeleaf view   -->
-    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
-        <property name="templateEngine" ref="templateEngine" />
-        <property name="characterEncoding" value="UTF-8" />
-    </bean>
 
+    <!--    Thymeleaf view   -->
     <bean id="templateResolver" class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
         <property name="prefix" value="/WEB-INF/thymeleaf/" />
         <property name="suffix" value=".html" />
@@ -109,6 +122,8 @@
     <oxm:jaxb2-marshaller id="marshaller">
         <oxm:class-to-be-bound name="com.infotech.ivr.reporting.domain.Product"/>
     </oxm:jaxb2-marshaller>
+
+    <bean name="product/productReportExport.pdf" class="com.infotech.ivr.reporting.web.export.ProductReportPdf"/>
 
 </beans>
 

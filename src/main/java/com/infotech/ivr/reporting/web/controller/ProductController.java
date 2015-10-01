@@ -52,7 +52,7 @@ public class ProductController {
                        @RequestParam(value="pageSize", defaultValue="10") int pageSize,
                        Model model) {
         LOG.debug("getting products list");
-        List<Product> products = productService.findAll(page, pageSize);
+        List<Product> products = productService.findAllPageable(page, pageSize);
         long count = productService.getCount();
         model.addAttribute("products", products);
         model.addAttribute("count", count);
@@ -107,6 +107,22 @@ public class ProductController {
        return "product/productReport";
     }
 
+    @RequestMapping(value="/reportExport", method = RequestMethod.POST)
+    public String report(ProductReportFilter filter, BindingResult result, 
+                         @RequestParam(value="sortField", required=false) String sortField,
+                         @RequestParam(value="isSortDirectionAsc", defaultValue="true") boolean isSortDirectionAsc,
+                         Model model) {
+        if (sortField == null) {
+            // default sort field
+            sortField = "dateTime"; 
+        }
+        List<Product> products = productService.report(filter, sortField, isSortDirectionAsc);
+        long count = productService.reportCount(filter);
+        model.addAttribute("products", products);
+        model.addAttribute("count", count);
+        return "product/productReportExport";
+    }
+
     @RequestMapping(value="/report", method = RequestMethod.POST)
     public String report(ProductReportFilter filter, BindingResult result, 
                          @RequestParam(value="page", defaultValue="1") int page,
@@ -118,7 +134,7 @@ public class ProductController {
             // default sort field
             sortField = "dateTime"; 
         }
-        List<Product> products = productService.report(filter, page, pageSize, sortField, isSortDirectionAsc);
+        List<Product> products = productService.reportPageable(filter, sortField, isSortDirectionAsc, page, pageSize);
         long count = productService.reportCount(filter);
         model.addAttribute("products", products);
         model.addAttribute("count", count);
@@ -142,7 +158,7 @@ public class ProductController {
             sortField = "dateTime"; 
         }
         LOG.debug("productReportFilter: {}", filter.toString());
-        List<Product> products = productService.report(filter, page, pageSize, sortField, isSortDirectionAsc);
+        List<Product> products = productService.reportPageable(filter, sortField, isSortDirectionAsc, page, pageSize);
         //long count = productService.reportCount(filter);
         //model.addAttribute("products", products);
         //model.addAttribute("count", count);

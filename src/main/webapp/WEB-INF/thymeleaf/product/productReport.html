@@ -4,14 +4,12 @@
 
 <head>
     <meta th:include="fragments/headTag :: headTag" th:remove="tag"/>
-    <meta th:include="fragments/headTagCalendar :: headTagCalendar" th:remove="tag"/>
-</head>
-
-<body>
+    <meta th:include="fragments/headTagCalendar :: headTagCalendar" th:remove="tag"/> 
 
 <script type="text/javascript" th:inline="javascript">
 
 $(document).ready(function(){
+
    $("ul.pagination a").click(function(e) {
         e.preventDefault();
         $("#page").val($(this).attr("id"));
@@ -33,7 +31,8 @@ $(document).ready(function(){
         $("form").submit();
     }); 
 
-   $("form").submit(function(event){
+   $("form :submit").click(function(event){
+        event.preventDefault();
         /*
         var postData = {
             "name" : $("#name").val(),
@@ -47,12 +46,13 @@ $(document).ready(function(){
             "isSortDirectionAsc" : $("#isSortDirectionAsc").val()
         }
         */
+
         $.ajax({
             type: "POST",
             url: [[@{/products/report.json}]],
    //         contentType: "application/json; charset=utf-8",
             //data: JSON.stringify(postData),
-            data: $(this).serialize(),
+            data: $("form").serialize(),
             success: function (data) {
                           $("table tbody").html("");
                           $.each(data.products, function (index, item) {
@@ -61,11 +61,36 @@ $(document).ready(function(){
                           });
                      }
         });
+
+    }); 
+
+   $("form :button").click(function(event){
         event.preventDefault();
+        /*
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: [[@{/products/report.pdf}]],
+            data: $("form").serialize(),
+            success: function (data) {
+                     }
+        });
+        */
+
+        $("form").attr("action", [[@{/products/reportExport.pdf}]]);
+        //$("form").attr("method", "get");
+        //$("form").attr("target", "_blank");
+        $("form").submit();
     }); 
 
 });
+
 </script>
+
+
+</head>
+
+<body>
 
     <div class="container" th:dir="${#locale.language == 'fa'}? 'rtl'">
         <div th:include="/fragments/header :: header">
@@ -124,6 +149,11 @@ $(document).ready(function(){
                <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input  type="submit" value="report" class="btn btn-primary" th:value="#{button.report}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="button" value="export" class="btn btn-primary" th:value="#{button.export}" />
                     </div>
                 </div>
                 <input type="hidden" name="page" id="page" value="1" />
