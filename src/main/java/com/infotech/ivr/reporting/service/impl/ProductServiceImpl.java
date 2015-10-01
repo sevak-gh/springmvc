@@ -38,8 +38,8 @@ public class ProductServiceImpl implements ProductService {
     
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findAll(int currentPage, int pageSize) {
-        return productRepository.findAll(currentPage, pageSize);
+    public List<Product> findAllPageable(int currentPage, int pageSize) {
+        return productRepository.findAllPageable(currentPage, pageSize);
     }
 
     @Override
@@ -62,19 +62,36 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> report(ProductReportFilter filter, int currentPage, int pageSize, List<SortExpression> sortExpressions) {
-        return productRepository.report(filter, currentPage, pageSize, sortExpressions);
+    public List<Product> reportPageable(ProductReportFilter filter, List<SortExpression> sortExpressions, int currentPage, int pageSize) {
+        return productRepository.reportPageable(filter, sortExpressions, currentPage, pageSize);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> report(ProductReportFilter filter, int currentPage, int pageSize, String sortField, boolean isAsc) {
+    public List<Product> reportPageable(ProductReportFilter filter, String sortField, boolean isAsc, int currentPage, int pageSize) {
         SortExpression sortExpression = new SortExpression();
         sortExpression.setField(sortField);
         sortExpression.setDirection((isAsc) ? SortExpression.Direction.ASC : SortExpression.Direction.DESC);
         List<SortExpression> sortExpressions = new ArrayList<SortExpression>();
         sortExpressions.add(sortExpression);
-        return productRepository.report(filter, currentPage, pageSize, sortExpressions);
+        return productRepository.reportPageable(filter, sortExpressions, currentPage, pageSize);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> report(ProductReportFilter filter, List<SortExpression> sortExpressions) {
+        return productRepository.report(filter, sortExpressions);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> report(ProductReportFilter filter, String sortField, boolean isAsc) {
+        SortExpression sortExpression = new SortExpression();
+        sortExpression.setField(sortField);
+        sortExpression.setDirection((isAsc) ? SortExpression.Direction.ASC : SortExpression.Direction.DESC);
+        List<SortExpression> sortExpressions = new ArrayList<SortExpression>();
+        sortExpressions.add(sortExpression);
+        return productRepository.report(filter, sortExpressions);
     }
 
     @Override

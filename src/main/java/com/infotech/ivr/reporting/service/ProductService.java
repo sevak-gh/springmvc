@@ -13,11 +13,13 @@ import java.util.List;
  */
 public interface ProductService {
     List<Product> findAll();
-    List<Product> findAll(int currentPage, int pageSize);
+    List<Product> findAllPageable(int currentPage, int pageSize);
     Product findById(long id);
     Product save(Product product);
     long getCount();
-    List<Product> report(ProductReportFilter filter, int currentPage, int pageSize, List<SortExpression> sortExpressions);
-    List<Product> report(ProductReportFilter filter, int currentPage, int pageSize, String sortField, boolean isAsc);
+    List<Product> report(ProductReportFilter filter, List<SortExpression> sortExpressions);
+    List<Product> report(ProductReportFilter filter, String sortField, boolean isAsc);
+    List<Product> reportPageable(ProductReportFilter filter, List<SortExpression> sortExpressions, int currentPage, int pageSize);
+    List<Product> reportPageable(ProductReportFilter filter, String sortField, boolean isAsc, int currentPage, int pageSize);
     long reportCount(ProductReportFilter filter);
 }

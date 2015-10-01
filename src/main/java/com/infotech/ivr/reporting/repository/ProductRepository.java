@@ -13,10 +13,11 @@ import java.util.List;
  */
 public interface ProductRepository {
     List<Product> findAll();
+    List<Product> findAllPageable(int currentPage, int pageSize);
     Product findById(long id);
     Product save(Product product);
     Long count();
-    List<Product> findAll(int currentPage, int pageSize);
-    List<Product> report(ProductReportFilter filter, int currentPage, int pageSize, List<SortExpression> sortExpressions);
+    List<Product> report(ProductReportFilter filter, List<SortExpression> sortExpressions);
+    List<Product> reportPageable(ProductReportFilter filter, List<SortExpression> sortExpressions, int currentPage, int pageSize);
     long reportCount(ProductReportFilter filter);
 }

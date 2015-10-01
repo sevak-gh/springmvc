@@ -33,7 +33,7 @@ public class SpringDataJpaProductRepositoryImpl {
      * currentPage numbered from 1
      *
      */
-    public List<Product> findAll(int currentPage, int pageSize) {
+    public List<Product> findAllPageable(int currentPage, int pageSize) {
         return em.createQuery("SELECT product from Product product", Product.class)
                     .setFirstResult((currentPage-1) * pageSize)
                     .setMaxResults(pageSize)
@@ -43,38 +43,28 @@ public class SpringDataJpaProductRepositoryImpl {
     /**
      * get product report 
      */
-    public List<Product> report(ProductReportFilter filter, int currentPage, int pageSize, List<SortExpression> sortExpressions) {
+    public List<Product> reportPageable(ProductReportFilter filter, List<SortExpression> sortExpressions, int currentPage, int pageSize) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = builder.createQuery(Product.class);
         Root<Product> product = criteria.from(Product.class);
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        if ((filter != null)&& (filter.getPrice() != null)) {
-            predicates.add(builder.equal(product.get("price"), filter.getPrice()));
-        }
-        if ((filter != null)&& (filter.getName() != null)) {
-            predicates.add(builder.like(product.get("name"), "%" + filter.getName() + "%"));
-        }
-        if ((filter != null)&& (filter.getFromDate() != null)) {
-            predicates.add(builder.greaterThanOrEqualTo(product.<LocalDateTime>get("dateTime"), filter.getFromDate()));
-        }
-        if ((filter != null)&& (filter.getToDate() != null)) {
-            predicates.add(builder.lessThanOrEqualTo(product.<LocalDateTime>get("dateTime"), filter.getToDate()));
-        }
-        criteria.where(builder.and(predicates.toArray(new Predicate[0])));
-        List<Order> orderList = new ArrayList<Order>();
-        if (sortExpressions != null) {
-            for (SortExpression sortExpression : sortExpressions) {
-                if (sortExpression.getDirection() == SortExpression.Direction.ASC) {
-                    orderList.add(builder.asc(product.get(sortExpression.getField())));
-                } else {
-                    orderList.add(builder.desc(product.get(sortExpression.getField())));
-                }
-            }
-            criteria.orderBy(orderList.toArray(new Order[0]));
-        }
+        prepareCriteriaPredicates(builder, criteria, product, filter);
+        prepareCriteriaOrder(builder, criteria, product, sortExpressions);        
         return em.createQuery(criteria)
                  .setFirstResult((currentPage-1) * pageSize)
                  .setMaxResults(pageSize)
+                 .getResultList();
+    }
+
+    /**
+     * get product report 
+     */
+    public List<Product> report(ProductReportFilter filter, List<SortExpression> sortExpressions) {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = builder.createQuery(Product.class);
+        Root<Product> product = criteria.from(Product.class);
+        prepareCriteriaPredicates(builder, criteria, product, filter);
+        prepareCriteriaOrder(builder, criteria, product, sortExpressions);        
+        return em.createQuery(criteria)
                  .getResultList();
     }
 
@@ -86,6 +76,14 @@ public class SpringDataJpaProductRepositoryImpl {
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         Root<Product> product = criteria.from(Product.class);
         criteria.select(builder.count(product));
+        prepareCriteriaPredicates(builder, criteria, product, filter);
+        return em.createQuery(criteria).getSingleResult();
+    }
+
+    /**
+     * prepares predicate for criteria.
+     */
+    private void prepareCriteriaPredicates(CriteriaBuilder builder, CriteriaQuery<?> criteria, Root<Product> product, ProductReportFilter filter) {
         List<Predicate> predicates = new ArrayList<Predicate>();
         if ((filter != null)&& (filter.getPrice() != null)) {
             predicates.add(builder.equal(product.get("price"), filter.getPrice()));
@@ -99,7 +97,23 @@ public class SpringDataJpaProductRepositoryImpl {
         if ((filter != null)&& (filter.getToDate() != null)) {
             predicates.add(builder.lessThanOrEqualTo(product.<LocalDateTime>get("dateTime"), filter.getToDate()));
         }
-        criteria.where(builder.and(predicates.toArray(new Predicate[0])));
-        return em.createQuery(criteria).getSingleResult();
+        criteria.where(builder.and(predicates.toArray(new Predicate[0])));       
+    }
+ 
+    /**
+     * prepares orderBy for criteria.
+     */
+    private void prepareCriteriaOrder(CriteriaBuilder builder, CriteriaQuery<?> criteria, Root<Product> product, List<SortExpression> sortExpressions) {
+        if (sortExpressions != null) {
+            List<Order> orderList = new ArrayList<Order>();
+            for (SortExpression sortExpression : sortExpressions) {
+                if (sortExpression.getDirection() == SortExpression.Direction.ASC) {
+                    orderList.add(builder.asc(product.get(sortExpression.getField())));
+                } else {
+                    orderList.add(builder.desc(product.get(sortExpression.getField())));
+                }
+            }
+            criteria.orderBy(orderList.toArray(new Order[0]));
+        }
     }
 }
