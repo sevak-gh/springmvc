@@ -40,6 +40,9 @@ public class LocalDateTimeConverterFormatter {
     }
 
     public static String print(LocalDateTime dateTime, Locale locale, String format) {
+        if (dateTime == null) {
+            return "";
+        }    
         if (locale.getLanguage().equalsIgnoreCase("fa")) {   // locale == "persian" 
             Calendar calendar = Calendar.getInstance(new ULocale("fa_IR@calendar=persian"));
             Date dt = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant()); 
