@@ -414,25 +414,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-            <groupId>org.codehaus.mojo</groupId>  
-                <artifactId>native2ascii-maven-plugin</artifactId>  
-                <version>1.0-beta-1</version>  
-                <executions>  
-                    <execution>  
-                        <id>native2ascii-utf8-resources</id>  
-                        <goals>  
-                            <goal>native2ascii</goal>  
-                        </goals>  
-                        <configuration>  
-                            <dest>target/classes/messages</dest>
-                            <src>src/main/resources/messages</src>  
-                            <encoding>UTF8</encoding>  
-                        </configuration>  
-                    </execution>  
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 

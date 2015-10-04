@@ -39,6 +39,7 @@
     <!-- spring message source  -->
     <bean id= "messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename" value="messages/messages"/> 
+        <property name="defaultEncoding" value="UTF-8"/> 
     </bean>
 
     <!-- file upload  -->
@@ -123,7 +124,9 @@
         <oxm:class-to-be-bound name="com.infotech.ivr.reporting.domain.Product"/>
     </oxm:jaxb2-marshaller>
 
-    <bean name="product/productReportExport.pdf" class="com.infotech.ivr.reporting.web.export.ProductReportPdf"/>
+    <bean name="product/productReportExport.pdf" class="com.infotech.ivr.reporting.web.export.ProductReportPdf">
+        <property name="font" value="classpath:fonts/tahoma.ttf"/>
+    </bean>
 
 </beans>
 
