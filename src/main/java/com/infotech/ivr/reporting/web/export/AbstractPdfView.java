@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.view.AbstractView;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -41,7 +42,7 @@ public abstract class AbstractPdfView extends AbstractView {
         ByteArrayOutputStream baos = createTemporaryOutputStream();
 
         // Apply preferences and build metadata.
-        Document document = new Document();
+        Document document = new Document(PageSize.A4, 36, 36, 54, 36);
         PdfWriter writer = PdfWriter.getInstance(document, baos);
         prepareWriter(model, writer, request);
         buildPdfMetadata(model, document, request);
