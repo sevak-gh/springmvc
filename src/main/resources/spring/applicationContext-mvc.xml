@@ -125,7 +125,7 @@
     </oxm:jaxb2-marshaller>
 
     <bean name="product/productReportExport.pdf" class="com.infotech.ivr.reporting.web.export.ProductReportPdf">
-        <property name="font" value="classpath:fonts/tahoma.ttf"/>
+        <property name="font" value="/resources/fonts/BYekan.ttf"/>
     </bean>
 
 </beans>

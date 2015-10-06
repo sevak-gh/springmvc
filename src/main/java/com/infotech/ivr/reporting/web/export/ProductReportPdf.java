@@ -60,8 +60,10 @@ public class ProductReportPdf extends AbstractPdfView {
         Locale locale = LocaleContextHolder.getLocale();
 
         // create font
+        LOG.debug("PDF generator: font path:{}...", font.getFile().getAbsolutePath());
         BaseFont bf = BaseFont.createFont(font.getFile().getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);        
         Font pdfFont = new Font(bf, 12);
+        Font pdfFontRed = new Font(bf, 12, Font.NORMAL, BaseColor.RED);
  
         // init table
         PdfPTable table = new PdfPTable(3);
@@ -75,7 +77,7 @@ public class ProductReportPdf extends AbstractPdfView {
         table.setWidthPercentage(100);
 
         // table header
-        table.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);
+        table.getDefaultCell().setBackgroundColor(BaseColor.MAGENTA);
         table.addCell(new Phrase(messageSource.getMessage("product.name", null, locale), pdfFont));
         table.addCell(new Phrase(messageSource.getMessage("product.price", null, locale), pdfFont));
         table.addCell(new Phrase(messageSource.getMessage("product.dateTime", null, locale), pdfFont));
@@ -87,9 +89,9 @@ public class ProductReportPdf extends AbstractPdfView {
         for (Product product : products) {
             table.addCell(new Phrase(product.getName(), pdfFont));
             if (product.getPrice() != null) {
-                table.addCell(new Phrase(NumberFormat.getInstance(locale).format(product.getPrice().doubleValue()), pdfFont));
+                table.addCell(new Phrase(NumberFormat.getInstance(locale).format(product.getPrice().doubleValue()), pdfFontRed));
             } else {
-                table.addCell(new Phrase("", pdfFont));
+                table.addCell(new Phrase("", pdfFontRed));
             }
             table.addCell(new Phrase(LocalDateTimeConverterFormatter.print(product.getDateTime(), locale, "yyyy/MM/dd HH:mm:ss"), pdfFont));
         }
