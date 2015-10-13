@@ -114,7 +114,6 @@ public class ProductController {
                          Model model) {
         List<Product> products = productService.report(filter, sortField, isSortDirectionAsc);
         model.addAttribute("products", products);
-        //return model;
         return "product/productReportExport";
     }
 

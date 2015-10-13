@@ -43,7 +43,6 @@ public class ProductReportPdf extends AbstractPdfView {
     private MessageSource messageSource;
 
     @Override
-    @SuppressWarnings("unchecked")
     public void buildPdfDocument(Map<String, Object> model, Document document, 
                                  PdfWriter writer, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -84,6 +83,7 @@ public class ProductReportPdf extends AbstractPdfView {
         table.setHeaderRows(1);
 
         // fill table rows
+        @SuppressWarnings("unchecked")
         List<Product> products = (List<Product>)model.get("products");
         for (Product product : products) {
             table.addCell(new Phrase(product.getName(), pdfFont));

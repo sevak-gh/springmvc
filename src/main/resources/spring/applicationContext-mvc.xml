@@ -95,6 +95,8 @@
                 <entry key="json" value="application/json" />
                 <entry key="pdf" value="application/pdf" />
                 <entry key="csv" value="text/csv" />
+                <entry key="xls" value="application/vnd.ms-excel" />
+                <entry key="xlsx" value="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
             </map>
         </property>
     </bean>

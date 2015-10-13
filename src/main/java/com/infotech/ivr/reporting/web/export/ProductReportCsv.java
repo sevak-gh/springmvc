@@ -33,7 +33,6 @@ public class ProductReportCsv extends AbstractCsvView {
     private MessageSource messageSource;
 
     @Override
-    @SuppressWarnings("unchecked")
     public void buildCsvDocument(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         LOG.debug("CSV generator...");
@@ -47,6 +46,7 @@ public class ProductReportCsv extends AbstractCsvView {
                                     messageSource.getMessage("product.dateTime", null, locale));
 
         // fill rows
+        @SuppressWarnings("unchecked")
         List<Product> products = (List<Product>)model.get("products");
         for (Product product : products) {
             response.getWriter().printf("\"%s\",\"%s\",\"%s\"\n", 
