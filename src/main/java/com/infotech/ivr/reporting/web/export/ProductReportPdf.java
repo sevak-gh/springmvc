@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.annotation.Resource;
 import java.util.Locale;
 import java.io.File;
-import java.text.NumberFormat;
 
+import org.springframework.stereotype.Component;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import com.itextpdf.text.Document;
@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
  * @author Sevak Gharibian
  *
  */
-@SuppressWarnings("unchecked")
+@Component("product/productReportExport.pdf")
 public class ProductReportPdf extends AbstractPdfView {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProductReportPdf.class);
@@ -42,13 +42,8 @@ public class ProductReportPdf extends AbstractPdfView {
     @Resource
     private MessageSource messageSource;
 
-    private org.springframework.core.io.Resource font;
-
-    public void setFont(org.springframework.core.io.Resource font) {
-        this.font = font;
-    }
-   
     @Override
+    @SuppressWarnings("unchecked")
     public void buildPdfDocument(Map<String, Object> model, Document document, 
                                  PdfWriter writer, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -78,6 +73,10 @@ public class ProductReportPdf extends AbstractPdfView {
 
         // table header
         table.getDefaultCell().setBackgroundColor(BaseColor.MAGENTA);
+        LOG.debug("PDF generator: header:{},{},{}...", 
+                    messageSource.getMessage("product.name", null, locale), 
+                    messageSource.getMessage("product.price", null, locale), 
+                    messageSource.getMessage("product.dateTime", null, locale));
         table.addCell(new Phrase(messageSource.getMessage("product.name", null, locale), pdfFont));
         table.addCell(new Phrase(messageSource.getMessage("product.price", null, locale), pdfFont));
         table.addCell(new Phrase(messageSource.getMessage("product.dateTime", null, locale), pdfFont));
@@ -89,7 +88,7 @@ public class ProductReportPdf extends AbstractPdfView {
         for (Product product : products) {
             table.addCell(new Phrase(product.getName(), pdfFont));
             if (product.getPrice() != null) {
-                table.addCell(new Phrase(NumberFormat.getInstance(locale).format(product.getPrice().doubleValue()), pdfFontRed));
+                table.addCell(new Phrase(String.valueOf(product.getPrice()), pdfFontRed));
             } else {
                 table.addCell(new Phrase("", pdfFontRed));
             }

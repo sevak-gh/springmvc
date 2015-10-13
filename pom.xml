@@ -30,10 +30,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- spring -->
-        <spring.version>4.1.1.RELEASE</spring.version>
+        <spring.version>4.2.1.RELEASE</spring.version>
         <jaxws-spring.version>1.9</jaxws-spring.version>
         <spring.security.version>4.0.0.RELEASE</spring.security.version>
-        <spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
+        <spring-data-jpa.version>1.9.0.RELEASE</spring-data-jpa.version>
 
         <!--    servlet/jstl -->
         <jstl.version>1.2</jstl.version>
@@ -331,6 +331,12 @@
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
             <version>5.5.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.13</version>
         </dependency>
 
     </dependencies>

@@ -94,6 +94,7 @@
                 <entry key="atom" value="application/atom+xml" />
                 <entry key="json" value="application/json" />
                 <entry key="pdf" value="application/pdf" />
+                <entry key="csv" value="text/csv" />
             </map>
         </property>
     </bean>
@@ -124,9 +125,21 @@
         <oxm:class-to-be-bound name="com.infotech.ivr.reporting.domain.Product"/>
     </oxm:jaxb2-marshaller>
 
+<!--
+    <bean id="abstractPdf" class="com.infotech.ivr.reporting.web.export.AbstractPdfView" abstract="true">
+        <property name="font" value="/resources/fonts/BYekan.ttf"/>
+    </bean>
+-->
+
+<!--
     <bean name="product/productReportExport.pdf" class="com.infotech.ivr.reporting.web.export.ProductReportPdf">
         <property name="font" value="/resources/fonts/BYekan.ttf"/>
     </bean>
+-->
+
+<!--    <bean name="product/productReportExport.csv" class="com.infotech.ivr.reporting.web.export.ProductReportCsv">
+    </bean>
+-->
 
 </beans>
 

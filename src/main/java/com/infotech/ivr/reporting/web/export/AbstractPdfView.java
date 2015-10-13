@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.view.AbstractView;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
@@ -20,6 +21,10 @@ import com.itextpdf.text.pdf.PdfWriter;
  *      
  */    
 public abstract class AbstractPdfView extends AbstractView {
+
+    //@Value("/resources/fonts/BYekan.ttf")
+    @Value("/resources/fonts/tahoma.ttf")
+    protected org.springframework.core.io.Resource font;
 
     /**
      * This constructor sets the appropriate content type "application/pdf".

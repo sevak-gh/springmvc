@@ -6,6 +6,16 @@
     <meta th:include="fragments/headTag :: headTag" th:remove="tag"/>
     <meta th:include="fragments/headTagCalendar :: headTagCalendar" th:remove="tag"/> 
 
+    <style> 
+        @font-face {
+            font-family: yekan;
+            src: url(../resources/fonts/BYekan.ttf);
+        }
+
+        body {
+            font-family: yekan;
+        }
+</style>
 <script type="text/javascript" th:inline="javascript">
 
 $(document).ready(function(){
@@ -77,7 +87,7 @@ $(document).ready(function(){
         });
         */
 
-        $("form").attr("action", [[@{/products/reportExport.pdf}]]);
+        $("form").attr("action", [[@{/products/reportExport.}]] + $("#export").val());
         //$("form").attr("method", "get");
         //$("form").attr("target", "_blank");
         $("form").submit();
@@ -154,6 +164,15 @@ $(document).ready(function(){
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="button" value="export" class="btn btn-primary" th:value="#{button.export}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <select id="export" name="eport">
+                            <option value="pdf">pdf</option>
+                            <option value="csv">csv</option>
+                            <option value="excel">xls</option>
+                        </select>
                     </div>
                 </div>
                 <input type="hidden" name="page" id="page" value="1" />
