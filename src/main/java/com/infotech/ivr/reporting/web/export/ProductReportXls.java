@@ -44,23 +44,8 @@ public class ProductReportXls extends AbstractXlsView {
 
         // init font
 
-        Sheet sheet = workbook.createSheet();        
-
-
-        // fill rows
-        @SuppressWarnings("unchecked")
-        List<Product> products = (List<Product>)model.get("products");
-        int rowCount = 0;
-        for (Product product : products) {
-            Row row = sheet.createRow(++rowCount);
-            writeRow(product, row, locale);
-        }
+        ProductReportExcelWriter writer = new ProductReportExcelWriter();
+        writer.writeExcel(model, workbook, locale, messageSource);
     }
-
-    private void writeRow(Product product, Row row, Locale locale) {
-        row.createCell(1).setCellValue(product.getName());
-        row.createCell(2).setCellValue(String.valueOf(product.getPrice()));
-        row.createCell(3).setCellValue(LocalDateTimeConverterFormatter.print(product.getDateTime(), locale, "yyyy/MM/dd HH:mm:ss"));
-   }        
 }
 
