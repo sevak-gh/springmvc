@@ -19,7 +19,7 @@
 </style>
 </head>
 
-<body>
+<body th:style="${#locale.language == 'fa'}? 'font-family: yekan' : 'font-family: tahoma'">
     <div class="container" th:dir="${#locale.language == 'fa'}? 'rtl'">
         <div th:include="/fragments/header :: header">
         </div>
