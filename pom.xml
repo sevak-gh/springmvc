@@ -36,7 +36,6 @@
         <spring-data-jpa.version>1.9.0.RELEASE</spring-data-jpa.version>
 
         <!--    servlet/jstl -->
-        <jstl.version>1.2</jstl.version>
         <servlet.version>3.1.0</servlet.version>
 
         <!-- Thymeleaf -->                    
@@ -50,7 +49,6 @@
         <aspectj.version>1.8.2</aspectj.version>
         
         <!-- test -->
-        <junit.version>4.11</junit.version>
         <testng.version>6.8.8</testng.version>
         <mockito.version>1.10.8</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
@@ -64,6 +62,7 @@
 
         <!-- hibernate -->
         <hibernate.version>4.3.8.Final</hibernate.version>
+        <hibernate.validator.version>5.1.3.Final</hibernate.validator.version>
 
         <!-- deployment server -->
         <deploy.server.url>http://localhost:8080/manager/text</deploy.server.url>
@@ -73,19 +72,8 @@
 
     </properties>      
 
+    <!-- test deps   -->
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <dependency>
             <groupId>org.testng</groupId>
@@ -116,6 +104,21 @@
 
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.185</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--    spring  -->
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
             <exclusions>
@@ -129,12 +132,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
         </dependency>
 
@@ -181,27 +178,28 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
             <version>${spring-data-jpa.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring.security.version}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- hibernate    -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>${jstl.version}</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.1.3.Final</version>
         </dependency>
 
         <dependency>
@@ -211,6 +209,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--    log deps      -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -235,13 +234,7 @@
             <version>${log4j.version}</version>
         </dependency>
 
-        <!-- Spring AOP + AspectJ -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
- 
+        <!-- AspectJ -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
@@ -252,29 +245,13 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
-        </dependency>
-
-        <!-- Needed for JSON View -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.6.2</version>
         </dependency>
 
         <dependency>
@@ -289,11 +266,6 @@
             <version>1.3.2</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>5.1.3.Final</version>
-        </dependency>
 
         <!-- thymeleaf  -->
         <dependency>
@@ -319,6 +291,23 @@
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
             <version>${jquery.webjar.version}</version>
+        </dependency>
+
+        <!-- Needed for JSON View -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.6.2</version>
         </dependency>
 
         <dependency>
