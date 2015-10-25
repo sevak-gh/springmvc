@@ -49,16 +49,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * unit test for product web.
+ * unit test for product controller.
  *
  * @author Sevak Gahribian
  */
 @WebAppConfiguration
 @ContextConfiguration(locations = { "classpath:spring/applicationContext-mvc.xml", 
                                     "classpath:spring/testContext.xml",  })
-public class ProductTest extends AbstractTestNGSpringContextTests  {
+public class ProductControllerTest extends AbstractTestNGSpringContextTests  {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProductTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ProductControllerTest.class);
 
     private MockMvc mockMvc;
 
@@ -77,6 +77,7 @@ public class ProductTest extends AbstractTestNGSpringContextTests  {
 
     @Test
     public void getProductsShouldGetProductsAndReturnStatusOKAndAddModelAndReturnView() throws Exception {
+        // arrange
         Product p1 = new Product();
         p1.setName("book");
         p1.setPrice(new BigDecimal(215.33));
@@ -86,6 +87,8 @@ public class ProductTest extends AbstractTestNGSpringContextTests  {
         when(productService.findAllPageable(anyInt(), anyInt())).thenReturn(Arrays.asList(p1, p2));
         long count = 2;
         when(productService.getCount()).thenReturn(count);
+
+        // act, assert
         mockMvc.perform(get("/products"))
             .andExpect(status().isOk())
             .andExpect(view().name("product/productList"))
@@ -99,6 +102,7 @@ public class ProductTest extends AbstractTestNGSpringContextTests  {
 
     @Test
     public void postProductsCreateShouldCreateProductAndReturnStatusRedirectAndReturnRedirectView() throws Exception {
+        // arrange, act, assert
         mockMvc.perform(post("/products/create")
                             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                             .param("name", "book")

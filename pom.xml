@@ -350,6 +350,7 @@
                     <target>${jdk.version}</target>
                     <compilerArgument>-deprecation</compilerArgument>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
+                    <compilerArgument>-Xlint:deprecation</compilerArgument>
                 </configuration>
             </plugin>
 
