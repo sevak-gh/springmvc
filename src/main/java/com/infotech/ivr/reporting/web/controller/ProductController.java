@@ -98,8 +98,12 @@ public class ProductController {
 
     @RequestMapping(value="/report", method = RequestMethod.GET)
     public String report(Model model) {
-        model.addAttribute("productReportFilter", new ProductReportFilter());
-        model.addAttribute("count", 0);
+        ProductReportFilter filter = new ProductReportFilter();
+        List<Product> products = productService.reportPageable(filter, "dateTime", false, 1, DEFAULT_PAGE_SIZE);
+        long count = productService.reportCount(filter);
+        model.addAttribute("productReportFilter", filter);
+        model.addAttribute("products", products);
+        model.addAttribute("count", count);
         model.addAttribute("page", 1);
         model.addAttribute("pageSize", DEFAULT_PAGE_SIZE);
         model.addAttribute("sortField", "dateTime");

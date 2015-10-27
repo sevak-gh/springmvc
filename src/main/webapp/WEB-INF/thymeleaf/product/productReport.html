@@ -6,62 +6,44 @@
     <meta th:include="fragments/headTag :: headTag" th:remove="tag"/>
     <meta th:include="fragments/headTagCalendar :: headTagCalendar" th:remove="tag"/> 
 
-    <style> 
-        @font-face {
-            font-family: yekan;
-            src: url(../resources/fonts/BYekan.ttf);
-        }
-
-        body {
-            font-family: yekan;
-        }
-</style>
 <script type="text/javascript" th:inline="javascript">
-
+/*<![CDATA[*/
 $(document).ready(function(){
 
-   $("ul.pagination a").click(function(e) {
-        e.preventDefault();
+    $("ul.pagination").on("click", "li a", function() {
         $("#page").val($(this).attr("id"));
-        $("#pageSize").val([[${pageSize}]]);
-        $("form").submit();
+        reload();
+        return false;
     });
 
     $("#pageSizeSelect").change(function(){
         $("#pageSize").val($(this).val());
-        $("#page").val([[${page}]]);
-        $("form").submit();
-    });   
+        $("#page").val(1);
+        reload();
+        return false;
+   });   
 
     $("table #dt").click(function(){
-        $("#page").val([[${page}]]);
-        $("#pageSize").val([[${pageSize}]]);
-        $("#sortField").val([[${sortField}]]);
-        $("#isSortDirectionAsc").val([[${!isSortDirectionAsc}]]);
-        $("form").submit();
+        $("#isSortDirectionAsc").val(($("#isSortDirectionAsc").val() == "true") ? "false" : "true");
+        reload();
+        return false;
+   });
+
+   $("form :submit").click(function() {
+        reload();
+        return false;
     }); 
 
-   $("form :submit").click(function(event){
-        event.preventDefault();
-        /*
-        var postData = {
-            "name" : $("#name").val(),
-            "price" : $("#price").val(),
-            "fromDate" : $("#fromDate").val(),
-            "toDate" : $("#toDate").val(),
-            "toDate" : $("#toDate").val(),
-            "page" : $("#page").val(),
-            "pageSize" : $("#pageSize").val(),
-            "sortField" : $("#sortField").val(),
-            "isSortDirectionAsc" : $("#isSortDirectionAsc").val()
-        }
-        */
+   $("form :button").click(function(){
+        $("form").attr("action", [[@{/products/reportExport.}]] + $("#export").val());
+        $("form").submit();
+    }); 
+});
 
+function reload() {
         $.ajax({
             type: "POST",
             url: [[@{/products/report.json}]],
-   //         contentType: "application/json; charset=utf-8",
-            //data: JSON.stringify(postData),
             data: $("form").serialize(),
             success: function (data) {
                           $("table tbody").html("");
@@ -69,32 +51,63 @@ $(document).ready(function(){
                               tr = "<tr><td>" + item.name + "</td><td>" + item.price + "</td><td>" + item.dateTime +  "</td></tr>";
                               $("table tbody").append(tr);                                        
                           });
-                     }
+                          page1 = ((parseInt(data.page-1)/3)*3) + 1;
+                          page2 = ((parseInt(data.page-1)/3)*3) + 2;
+                          page3 = ((parseInt(data.page-1)/3)*3) + 3;
+                          $("ul.pagination").html("");
+                            
+                          if (data.page != 1) {
+                            $("ul.pagination").append("<li><a>&#060;&#060;</a></li>");
+                            $("ul.pagination li a:last").attr("id", "1");
+                            $("ul.pagination li a:last").attr("href", "#");
+                          }
+                          if (data.page > 1) {
+                            $("ul.pagination").append("<li><a>&#060;</a></li>");
+                            $("ul.pagination li a:last").attr("id", data.page-1);
+                            $("ul.pagination li a:last").attr("href", "#");
+                          }
+                          if (((page1 - 1) * data.pageSize) < (data.count)) { 
+                            $("ul.pagination").append("<li><a></a></li>");
+                            $("ul.pagination li a:last").text(page1);
+                            $("ul.pagination li a:last").attr("id", page1);
+                            $("ul.pagination li a:last").attr("href", "#");
+                            if (data.page == page1) {
+                                $("ul.pagination li:last").addClass("active");
+                            }
+                         }
+                         if (((page2 - 1) * data.pageSize) < (data.count)) { 
+                            $("ul.pagination").append("<li><a></a></li>");
+                            $("ul.pagination li a:last").text(page2);
+                            $("ul.pagination li a:last").attr("id", page2);
+                            $("ul.pagination li a:last").attr("href", "#");
+                            if (data.page == page2) {
+                                $("ul.pagination li:last").addClass("active");
+                            }
+                         }
+                         if (((page3 - 1) * data.pageSize) < (data.count)) { 
+                            $("ul.pagination").append("<li><a></a></li>");
+                            $("ul.pagination li a:last").text(page3);
+                            $("ul.pagination li a:last").attr("id", page3);
+                            $("ul.pagination li a:last").attr("href", "#");
+                            if (data.page == page3) {
+                                $("ul.pagination li:last").addClass("active");
+                            }
+                         }
+                         if (data.page < (parseInt(data.count/data.pageSize)+1)) {
+                            $("ul.pagination").append("<li><a>&#062;</a></li>");
+                            $("ul.pagination li a:last").attr("id", data.page+1);
+                            $("ul.pagination li a:last").attr("href", "#");
+                          }
+                          if (data.page != (parseInt(data.count/data.pageSize)+1)) {
+                            $("ul.pagination").append("<li><a>&#062;&#062;</a></li>");
+                            $("ul.pagination li a:last").attr("id", (parseInt(data.count/data.pageSize)+1));
+                            $("ul.pagination li a:last").attr("href", "#");
+                          }
+               }
         });
+}
 
-    }); 
-
-   $("form :button").click(function(event){
-        event.preventDefault();
-        /*
-        $.ajax({
-            type: "POST",
-            async: false,
-            url: [[@{/products/report.pdf}]],
-            data: $("form").serialize(),
-            success: function (data) {
-                     }
-        });
-        */
-
-        $("form").attr("action", [[@{/products/reportExport.}]] + $("#export").val());
-        //$("form").attr("method", "get");
-        //$("form").attr("target", "_blank");
-        $("form").submit();
-    }); 
-
-});
-
+/*]]>*/
 </script>
 
 
@@ -127,6 +140,7 @@ $(document).ready(function(){
                         <input type="text" th:field="*{fromDate}" class="form-control" th:errorclass="fieldError"/>
                         <span class="help-inline" th:errors="*{fromDate}">[error]</span>
                             <script type="text/javascript" th:inline="javascript">
+                                /*
                                 Calendar.setup({
                                                 inputField     :    "fromDate",   // id of the input field
                                                 button         :    "fromDate",   // trigger for the calendar (button ID)
@@ -135,6 +149,7 @@ $(document).ready(function(){
                                                 dateType       :    [[${#locale.language == 'fa'} ? 'jalali' : 'gregorian']],
                                                 weekNumbers    : false
                                             });
+                                */
                             </script>
                     </div>
                 </div>
@@ -144,6 +159,7 @@ $(document).ready(function(){
                         <input type="text" th:field="*{toDate}" class="form-control" th:errorclass="fieldError"/>
                         <span class="help-inline" th:errors="*{toDate}">[error]</span>
                             <script type="text/javascript" th:inline="javascript">
+                                /*
                                 Calendar.setup({
                                                 inputField     :    "toDate",   // id of the input field
                                                 button         :    "toDate",   // trigger for the calendar (button ID)
@@ -152,6 +168,7 @@ $(document).ready(function(){
                                                 dateType       :    [[${#locale.language == 'fa'} ? 'jalali' : 'gregorian']],
                                                 weekNumbers    : false
                                             });
+                                */
                             </script>
 
                     </div>
@@ -168,7 +185,7 @@ $(document).ready(function(){
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <select id="export" name="eport">
+                        <select id="export" name="export">
                             <option value="pdf">pdf</option>
                             <option value="csv">csv</option>
                             <option value="xls">Excel 2003</option>
