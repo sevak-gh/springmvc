@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:security="http://www.springframework.org/schema/security"
-       xsi:schemaLocation="http://www.springframework.org/schema/security
-                           http://www.springframework.org/schema/security/spring-security.xsd
-                           http://www.springframework.org/schema/beans 
-                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                                 http://www.springframework.org/schema/beans/spring-beans.xsd
+                                 http://www.springframework.org/schema/security 
+                                 http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <security:http auto-config="false" use-expressions="true" pattern="/resources/**" security="none" />
+    <global-method-security pre-post-annotations="enabled" />
 
-    <security:http auto-config="false" use-expressions="true">
+    <http pattern="/resources/**" security="none" />
+    <http pattern="/webjars/**" security="none" />
 
-        <security:intercept-url pattern="/admin*" access="hasRole('ADMIN')" />
+    <http>
 
-        <security:form-login login-page="/signin" 
-               default-target-url="/"
-               username-parameter="username" 
-               password-parameter="password"   
-               authentication-failure-url="/signin?error"/>
-        <security:logout logout-success-url="/signout" delete-cookies="JSESSIONID" />
+        <intercept-url pattern="/" access="permitAll" />
+        <intercept-url pattern="/signin" access="permitAll" />
+        <intercept-url pattern="/signout" access="permitAll" />
+        <intercept-url pattern="/**" access="authenticated" />
 
-        <security:access-denied-handler error-page="/403"/>
+        <form-login login-page="/signin" 
+                    login-processing-url="/signin"
+                    default-target-url="/"
+                    username-parameter="username" 
+                    password-parameter="password"   
+                    authentication-failure-url="/signin?error"/>
 
-        <security:csrf disabled="true"/>
+        <logout logout-url="/signout" logout-success-url="/signout" delete-cookies="JSESSIONID" />
 
-    </security:http>
+        <!--<access-denied-handler error-page="/403"/>-->
 
-    <security:authentication-manager>
-        <security:authentication-provider>
-            <security:password-encoder hash="bcrypt" />
-            <security:user-service>
-                <!-- <security:user name="Admin" password="Admin123" authorities="ROLE_ADMIN" /> -->
-                <security:user name="Admin" password="$2a$10$cJ8V4.8YPtuWJOeAymLIxekgSQLUvlgwEKR3NrlA3pnz8APcRYlc2" authorities="ROLE_ADMIN" />
-            </security:user-service>
-        </security:authentication-provider>
-    </security:authentication-manager>
+        <csrf disabled="true"/>
 
-</beans>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider user-service-ref="AccessControlUserService">
+            <password-encoder hash="bcrypt" />
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>
