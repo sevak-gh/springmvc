@@ -37,7 +37,7 @@ public class LoginController {
 
     @RequestMapping(value = "/signout", method = RequestMethod.GET)
     public String signout(Model model) {
-        return "login/signout";
+        return "index";
     }
 
 }

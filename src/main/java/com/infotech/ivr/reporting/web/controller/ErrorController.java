@@ -24,14 +24,23 @@ public class ErrorController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ErrorController.class);
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping
     @ResponseBody
     public String error(Model model, HttpServletRequest request) {
         //model.addAttribute("count", count);
         String status = String.valueOf(request.getAttribute("javax.servlet.error.status_code"));
         String message = String.valueOf(request.getAttribute("javax.servlet.error.message"));
         String exception = String.valueOf(request.getAttribute("javax.servlet.error.exception"));
-        LOG.debug("error, status:{}\nmessage:{}\nexception:{}", status, message, exception);
-        return String.format("error handler:\nstatus: %s\nmessage: %s\n,exception:%s\n", status, message, exception);
+        String text = null;
+        switch (status) {
+            case "400":text = "bad request";break;
+            case "403":text = "you do not have permission";break;
+            case "404":text = "page not found";break;
+            case "405":text = "you do not have permission for operation";break;
+            case "500":text = "server error";break;
+            default:break;
+        }
+        LOG.debug("error, status:{}\nmessage:{}\nexception:{}\ndescription: {}", status, message, exception, text);
+        return String.format("error handler:\nstatus: %s\nmessage: %s\n,exception:%s\n, description: %s\n", status, message, exception, text);
     }
 }

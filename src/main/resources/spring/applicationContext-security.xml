@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans 
                                  http://www.springframework.org/schema/beans/spring-beans.xsd
-                                 http://www.springframework.org/schema/security 
+                                 http://www.springframework.org/schema/context
+                                 http://www.springframework.org/schema/context/spring-context.xsd
+                                 http://www.springframework.org/schema/security
                                  http://www.springframework.org/schema/security/spring-security.xsd">
 
     <global-method-security pre-post-annotations="enabled" />
+    <context:component-scan base-package="com.infotech.ivr.reporting.web.controller"/>
 
     <http pattern="/resources/**" security="none" />
     <http pattern="/webjars/**" security="none" />
@@ -17,6 +21,8 @@
         <intercept-url pattern="/" access="permitAll" />
         <intercept-url pattern="/signin" access="permitAll" />
         <intercept-url pattern="/signout" access="permitAll" />
+        <intercept-url pattern="/products/create" method="POST" access="hasAuthority('product_create_do')" />
+        <intercept-url pattern="/products/create" method="GET" access="hasAuthority('product_create_view')" />
         <intercept-url pattern="/**" access="authenticated" />
 
         <form-login login-page="/signin" 
@@ -26,16 +32,16 @@
                     password-parameter="password"   
                     authentication-failure-url="/signin?error"/>
 
-        <logout logout-url="/signout" logout-success-url="/signout" delete-cookies="JSESSIONID" />
+        <logout logout-url="/signout" logout-success-url="/" delete-cookies="JSESSIONID" />
 
-        <!--<access-denied-handler error-page="/403"/>-->
+        <!--<access-denied-handler error-page="/error" />-->
 
         <csrf disabled="true"/>
 
     </http>
 
     <authentication-manager>
-        <authentication-provider user-service-ref="AccessControlUserService">
+        <authentication-provider user-service-ref="UserService">
             <password-encoder hash="bcrypt" />
         </authentication-provider>
     </authentication-manager>

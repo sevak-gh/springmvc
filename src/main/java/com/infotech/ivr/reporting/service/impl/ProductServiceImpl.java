@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  *
@@ -50,6 +51,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    //@PreAuthorize("hasRole('admin')")
     public Product save(Product product) {
         return productRepository.save(product);
     }
