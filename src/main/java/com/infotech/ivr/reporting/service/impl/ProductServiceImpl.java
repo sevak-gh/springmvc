@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    //@PreAuthorize("hasRole('admin')")
+    //@PreAuthorize("hasAnyAuthority('product_create_do','product_update_do')")
     public Product save(Product product) {
         return productRepository.save(product);
     }

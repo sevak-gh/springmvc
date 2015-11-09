@@ -6,9 +6,12 @@
 <body>
 <div th:fragment="header">
     <a href="?language=en">English</a>|<a href="?language=fa">Farsi</a>
-    <div th:unless="${#httpServletRequest.remoteUser == null}" class="pull-right">
-        <span th:text="|Hello: ${#httpServletRequest.remoteUser}|"> Hello: username </span> |
+    <div th:if="${#authorization.expression('isAuthenticated()')}" class="pull-right">
+        <span th:text="|Hello: ${#authentication.name}|"> Hello: username </span> |
         <a href="#" th:href="@{/signout}">signout</a>
+    </div>
+    <div th:unless="${#authorization.expression('isAuthenticated()')}" class="pull-right">
+        <a href="#" th:href="@{/signin}">signin</a>
     </div>
 </div>
 </body>

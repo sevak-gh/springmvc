@@ -45,7 +45,7 @@
                 <a href="#" th:href="@{/products(page=${(count/pageSize)+1},pageSize=${pageSize})}">&#062;&#062;</a>
             </li>
         </ul>
-     <div>
+     <div th:if="${#authorization.expression('hasAuthority(''product_create_view'')')}">
         <a href="#" th:href="@{/products/create}" th:text="#{product.add.message}">add new product</a>
     </div>
     <span th:text="${page}">page</span>, <span th:text="${pageSize}">pageSize</span>

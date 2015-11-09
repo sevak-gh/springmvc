@@ -280,6 +280,12 @@
             <version>${thymeleaf.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+            <version>2.1.2.RELEASE</version>
+        </dependency>
+
         <!-- Webjars (static dependencies distributed as JAR files)  -->
         <dependency>
             <groupId>org.webjars</groupId>

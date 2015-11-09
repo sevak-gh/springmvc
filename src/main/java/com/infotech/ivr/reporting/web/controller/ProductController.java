@@ -111,16 +111,6 @@ public class ProductController {
        return "product/productReport";
     }
 
-    @RequestMapping(value="/reportExport", method = RequestMethod.POST)
-    public String report(ProductReportFilter filter, BindingResult result, 
-                         @RequestParam(value="sortField", required=false, defaultValue="dateTime") String sortField,
-                         @RequestParam(value="isSortDirectionAsc", defaultValue="true") boolean isSortDirectionAsc,
-                         Model model) {
-        List<Product> products = productService.report(filter, sortField, isSortDirectionAsc);
-        model.addAttribute("products", products);
-        return "product/productReportExport";
-    }
-
     @RequestMapping(value="/report", method = RequestMethod.POST)
     public String report(ProductReportFilter filter, BindingResult result, 
                          @RequestParam(value="page", defaultValue="1") int page,
@@ -138,4 +128,15 @@ public class ProductController {
         model.addAttribute("isSortDirectionAsc", isSortDirectionAsc);
         return "product/productReport";
     }
+
+    @RequestMapping(value="/reportExport", method = RequestMethod.POST)
+    public String reportExport(ProductReportFilter filter, BindingResult result, 
+                         @RequestParam(value="sortField", required=false, defaultValue="dateTime") String sortField,
+                         @RequestParam(value="isSortDirectionAsc", defaultValue="true") boolean isSortDirectionAsc,
+                         Model model) {
+        List<Product> products = productService.report(filter, sortField, isSortDirectionAsc);
+        model.addAttribute("products", products);
+        return "product/productReportExport";
+    }
+
 }

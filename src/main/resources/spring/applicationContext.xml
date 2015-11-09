@@ -23,7 +23,6 @@
 
     <context:component-scan base-package="com.infotech.ivr.reporting.service,
                                           com.infotech.ivr.reporting.repository,
-                                          com.infotech.ivr.reporting.web.controller,
                                           com.infotech.ivr.reporting.util" />
 
     <tx:annotation-driven />

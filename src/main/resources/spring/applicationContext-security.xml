@@ -11,7 +11,6 @@
                                  http://www.springframework.org/schema/security/spring-security.xsd">
 
     <global-method-security pre-post-annotations="enabled" />
-    <context:component-scan base-package="com.infotech.ivr.reporting.web.controller"/>
 
     <http pattern="/resources/**" security="none" />
     <http pattern="/webjars/**" security="none" />
@@ -21,8 +20,13 @@
         <intercept-url pattern="/" access="permitAll" />
         <intercept-url pattern="/signin" access="permitAll" />
         <intercept-url pattern="/signout" access="permitAll" />
-        <intercept-url pattern="/products/create" method="POST" access="hasAuthority('product_create_do')" />
+        <intercept-url pattern="/products" method="GET" access="hasAuthority('product_list_view')" />
         <intercept-url pattern="/products/create" method="GET" access="hasAuthority('product_create_view')" />
+        <intercept-url pattern="/products/create" method="POST" access="hasAuthority('product_create_do')" />
+        <intercept-url pattern="/products/reportExport" access="hasAuthority('product_report_export')" />
+        <intercept-url pattern="/products/report**" access="hasAuthority('product_report_view')" />
+        <intercept-url pattern="/products/**" method="GET" access="hasAuthority('product_update_view')" />
+        <intercept-url pattern="/products/**" method="POST" access="hasAuthority('product_update_do')" />
         <intercept-url pattern="/**" access="authenticated" />
 
         <form-login login-page="/signin" 
