@@ -1,6 +1,8 @@
 package com.infotech.ivr.reporting.domain;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.HashSet;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Future;
@@ -10,6 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
+import javax.persistence.ManyToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import static org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -42,6 +48,12 @@ public class User {
     @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private LocalDateTime expireDate;
 
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name="userrole", 
+               joinColumns = {@JoinColumn(name="fk_user", nullable=false)},
+               inverseJoinColumns = {@JoinColumn(name="fk_role", nullable=false)}) 
+    private Set<Role> roles = new HashSet<Role>();
+
     public Long getId() {
         return id;
     }
@@ -72,6 +84,14 @@ public class User {
 
     public void setExpireDate(LocalDateTime expireDate) {
         this.expireDate = expireDate;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.infotech.ivr.reporting.service.impl;
 
 import com.infotech.ivr.reporting.domain.User;
+import com.infotech.ivr.reporting.domain.Role;
+import com.infotech.ivr.reporting.domain.Permission;
 import com.infotech.ivr.reporting.service.UserService;
 import com.infotech.ivr.reporting.repository.UserRepository;
 
@@ -34,12 +36,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("username[" + username + "] not found");
         }
 
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        for (Role role : user.getRoles()){
+            for (Permission permission : role.getPermissions()) {
+                authorities.add(new SimpleGrantedAuthority(permission.getName()));
+            }
+        }
+    
+/*
         if (username.equals("admin")) {
             authorities.add(new SimpleGrantedAuthority("product_create_do"));
             authorities.add(new SimpleGrantedAuthority("product_update_do"));
@@ -49,6 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         authorities.add(new SimpleGrantedAuthority("product_create_view"));
         authorities.add(new SimpleGrantedAuthority("product_update_view"));
         authorities.add(new SimpleGrantedAuthority("product_report_view"));
+*/
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                                                                       user.getPassword(),
