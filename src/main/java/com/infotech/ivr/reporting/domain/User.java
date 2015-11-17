@@ -36,7 +36,7 @@ import org.hibernate.validator.constraints.NotEmpty;
     ),
     @NamedQuery(
         name = "findById",
-        query = "SELECT user FROM User user LEFT JOIN FETCH user.roles r LEFT JOIN FETCH r.permissions p WHERE user.id = :id"
+        query = "SELECT user FROM User user LEFT JOIN FETCH user.roles WHERE user.id = :id"
     )
 })
 @Entity

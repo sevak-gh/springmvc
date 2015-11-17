@@ -22,33 +22,12 @@
                 <td th:text="${{product.dateTime}}">2015/08/30 12:00:00</td>
             </tr>
         </table>
-         <ul class="pagination pagination-lg" th:with="page1=${(((page-1)/3)*3)+1},page2=${(((page-1)/3)*3)+2},page3=${(((page-1)/3)*3)+3}">
-            <li th:unless="${page == 1}">
-                <a href="#" th:href="@{/products(page=1,pageSize=${pageSize})}">&#060;&#060;</a>
-            </li>
-            <li th:unless="${page le 1}">
-                <a href="#" th:href="@{/products(page=${page-1},pageSize=${pageSize})}">&#060;</a>
-            </li>
-            <li th:unless="${((page1-1)*pageSize) ge count}" th:classappend="(${page} == ${page1})? 'active'">
-                <a href="#" th:href="@{/products(page=${page1},pageSize=${pageSize})}" th:text="${page1}">1</a>
-            </li>
-            <li th:unless="${((page2-1)*pageSize) ge count}" th:classappend="(${page} == ${page2})? 'active'">
-                <a href="#" th:href="@{/products(page=${page2},pageSize=${pageSize})}" th:text="${page2}">2</a>
-            </li>
-            <li th:unless="${((page3-1)*pageSize) ge count}" th:classappend="(${page} == ${page3})? 'active'">
-                <a href="#" th:href="@{/products(page=${page3},pageSize=${pageSize})}" th:text="${page3}">3</a>
-            </li>
-            <li th:unless="${page ge (count/pageSize+1)}">
-                <a href="#" th:href="@{/products(page=${page+1},pageSize=${pageSize})}">&#062;</a>
-            </li>
-            <li th:unless="${page == (count/pageSize+1)}">
-                <a href="#" th:href="@{/products(page=${(count/pageSize)+1},pageSize=${pageSize})}">&#062;&#062;</a>
-            </li>
-        </ul>
-     <div th:if="${#authorization.expression('hasAuthority(''product_create_view'')')}">
-        <a href="#" th:href="@{/products/create}" th:text="#{product.add.message}">add new product</a>
-    </div>
-    <span th:text="${page}">page</span>, <span th:text="${pageSize}">pageSize</span>
+        <!--    pager   -->
+        <div th:replace="/fragments/pager :: pager(path='products', page=${page}, pageSize=${pageSize})"></div>
+
+        <div th:if="${#authorization.expression('hasAuthority(''product_create_view'')')}">
+            <a href="#" th:href="@{/products/create}" th:text="#{product.add.message}">add new product</a>
+        </div>
    </div>
 </body>
 

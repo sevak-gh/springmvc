@@ -12,14 +12,17 @@
 
     <global-method-security pre-post-annotations="enabled" />
 
+    <!--    no security   -->        
     <http pattern="/resources/**" security="none" />
     <http pattern="/webjars/**" security="none" />
 
     <http>
 
+        <!--    accessible for all  -->
         <intercept-url pattern="/" access="permitAll" />
         <intercept-url pattern="/signin" access="permitAll" />
         <intercept-url pattern="/signout" access="permitAll" />
+        <!--  product permissions   -->
         <intercept-url pattern="/products" method="GET" access="hasAuthority('product_list_view')" />
         <intercept-url pattern="/products/create" method="GET" access="hasAuthority('product_create_view')" />
         <intercept-url pattern="/products/create" method="POST" access="hasAuthority('product_create_do')" />
@@ -27,6 +30,15 @@
         <intercept-url pattern="/products/report**" access="hasAuthority('product_report_view')" />
         <intercept-url pattern="/products/**" method="GET" access="hasAuthority('product_update_view')" />
         <intercept-url pattern="/products/**" method="POST" access="hasAuthority('product_update_do')" />
+         <!--  user permissions   -->
+        <intercept-url pattern="/users" method="GET" access="hasAuthority('user_list_view')" />
+        <intercept-url pattern="/users/create" method="GET" access="hasAuthority('user_create_view')" />
+        <intercept-url pattern="/users/create" method="POST" access="hasAuthority('user_create_do')" />
+        <intercept-url pattern="/users/reportExport" access="hasAuthority('user_report_export')" />
+        <intercept-url pattern="/users/report**" access="hasAuthority('user_report_view')" />
+        <intercept-url pattern="/users/**" method="GET" access="hasAuthority('user_update_view')" />
+        <intercept-url pattern="/users/**" method="POST" access="hasAuthority('user_update_do')" />
+        <!--    default, accessible for authenticated users  -->
         <intercept-url pattern="/**" access="authenticated" />
 
         <form-login login-page="/signin" 

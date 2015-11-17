@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+         <ul th:fragment="pager (page, pageSize, path)" class="pagination pagination-lg" 
+             th:with="page1=${(((page-1)/3)*3)+1},page2=${(((page-1)/3)*3)+2},page3=${(((page-1)/3)*3)+3}">
+            <li th:unless="${page == 1}">
+                <a href="#" th:href="@{/{path}(page=1,pageSize=${pageSize},path=${path})}">&#060;&#060;</a>
+            </li>
+            <li th:unless="${page le 1}">
+                <a href="#" th:href="@{/{path}(page=${page-1},pageSize=${pageSize},path=${path})}">&#060;</a>
+            </li>
+            <li th:unless="${((page1-1)*pageSize) ge count}" th:classappend="(${page} == ${page1})? 'active'">
+                <a href="#" th:href="@{/{path}(page=${page1},pageSize=${pageSize},path=${path})}" th:text="${page1}">1</a>
+            </li>
+            <li th:unless="${((page2-1)*pageSize) ge count}" th:classappend="(${page} == ${page2})? 'active'">
+                <a href="#" th:href="@{/{path}(page=${page2},pageSize=${pageSize},path=${path})}" th:text="${page2}">2</a>
+            </li>
+            <li th:unless="${((page3-1)*pageSize) ge count}" th:classappend="(${page} == ${page3})? 'active'">
+                <a href="#" th:href="@{/{path}(page=${page3},pageSize=${pageSize},path=${path})}" th:text="${page3}">3</a>
+            </li>
+            <li th:unless="${page ge (count/pageSize+1)}">
+                <a href="#" th:href="@{/{path}(page=${page+1},pageSize=${pageSize},path=${path})}">&#062;</a>
+            </li>
+            <li th:unless="${page == (count/pageSize+1)}">
+                <a href="#" th:href="@{/{path}(page=${(count/pageSize)+1},pageSize=${pageSize},path=${path})}">&#062;&#062;</a>
+            </li>
+        </ul>
+</body>
+</html>
+

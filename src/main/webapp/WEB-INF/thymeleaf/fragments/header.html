@@ -5,7 +5,8 @@
 </head>
 <body>
 <div th:fragment="header">
-    <a href="?language=en">English</a>|<a href="?language=fa">Farsi</a>
+    <a th:unless="${#locale.language == 'en'}" href="?language=en">English</a>
+    <a th:unless="${#locale.language == 'fa'}" href="?language=fa">Farsi</a>
     <div th:if="${#authorization.expression('isAuthenticated()')}" class="pull-right">
         <span th:text="|Hello: ${#authentication.name}|"> Hello: username </span> |
         <a href="#" th:href="@{/signout}">signout</a>

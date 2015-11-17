@@ -34,7 +34,7 @@ public class Role {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name="rolepermission", 
                joinColumns = {@JoinColumn(name="fk_role", nullable=false)},
                inverseJoinColumns = {@JoinColumn(name="fk_permission", nullable=false)}) 

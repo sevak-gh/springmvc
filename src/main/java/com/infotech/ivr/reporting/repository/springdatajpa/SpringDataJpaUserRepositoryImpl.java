@@ -23,7 +23,7 @@ public class SpringDataJpaUserRepositoryImpl {
      *
      */
     public List<User> findAllPageable(int currentPage, int pageSize) {
-        return em.createQuery("SELECT user FROM User user LEFT JOIN FETCH user.roles r LEFT JOIN FETCH r.permissions p", User.class)
+        return em.createQuery("SELECT user FROM User user LEFT JOIN FETCH user.roles", User.class)
                     .setFirstResult((currentPage-1) * pageSize)
                     .setMaxResults(pageSize)
                     .getResultList();
