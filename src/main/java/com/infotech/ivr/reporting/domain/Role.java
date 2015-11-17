@@ -34,7 +34,7 @@ public class Role {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="rolepermission", 
                joinColumns = {@JoinColumn(name="fk_role", nullable=false)},
                inverseJoinColumns = {@JoinColumn(name="fk_permission", nullable=false)}) 
@@ -67,5 +67,29 @@ public class Role {
     @Override
     public String toString() {
         return String.format("Role[id:%d, name:%s]", id, name);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof Role)) {
+            return false;
+        }        
+        Role role = (Role)other;        
+        if (this.id == role.id) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        if (id != null) {
+            result = 31 * result + id.hashCode();
+        }
+        return result;
     }
 }

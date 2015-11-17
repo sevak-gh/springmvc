@@ -62,8 +62,7 @@ public class ProductController {
     }
 
     @RequestMapping(value="/create", method = RequestMethod.GET)
-    public String initCreateForm(Model model, HttpSession session) {
-        LOG.debug("session: {}", session);
+    public String initCreateForm(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
         return "product/productCreateUpdate";

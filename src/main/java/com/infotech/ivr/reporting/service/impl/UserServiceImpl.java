@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -48,18 +49,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 authorities.add(new SimpleGrantedAuthority(permission.getName()));
             }
         }
-    
-/*
-        if (username.equals("admin")) {
-            authorities.add(new SimpleGrantedAuthority("product_create_do"));
-            authorities.add(new SimpleGrantedAuthority("product_update_do"));
-            authorities.add(new SimpleGrantedAuthority("product_report_export"));
-        }
-        authorities.add(new SimpleGrantedAuthority("product_list_view"));
-        authorities.add(new SimpleGrantedAuthority("product_create_view"));
-        authorities.add(new SimpleGrantedAuthority("product_update_view"));
-        authorities.add(new SimpleGrantedAuthority("product_report_view"));
-*/
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                                                                       user.getPassword(),
@@ -93,6 +82,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public User save(User user) {
+        // hash the password
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        user.setPassword(bcrypt.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

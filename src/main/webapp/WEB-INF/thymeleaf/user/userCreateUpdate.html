@@ -3,41 +3,65 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" 
-          th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}"  rel="stylesheet"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.js}"></script>
+    <meta th:include="fragments/headTag :: headTag" th:remove="tag"/>
+    <meta th:include="fragments/headTagCalendar :: headTagCalendar" th:remove="tag"/>
 </head>
 
-<body>
-    <div class="container">
+<body th:style="${#locale.language == 'fa'}? 'font-family: yekan' : 'font-family: tahoma'">
+    <div class="container" th:dir="${#locale.language == 'fa'}? 'rtl'">
+        <div th:include="/fragments/header :: header">
+        </div>
         <br/>
+        <p th:text="${#locale}">
+        </p>
         <form action="#" th:action="(${user.id} != null) ? @{|/users/${user.id}|} : @{/users/create}" th:object="${user}" class="form-horizontal" method="post">
                 <div class="form-group" th:classappend="${#fields.hasErrors('username')} ? 'has-error'">
-                    <label class="control-label col-md-2">username: </label>
+                    <label class="control-label col-md-2" th:text="#{user.username}">username: </label>
                     <div class="col-md-10">
                        <input type="text" th:field="*{username}" class="form-control"/>
                        <span class="help-inline" th:errors="*{username}">[error]</span>
                      </div>
                 </div>
                 <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? 'has-error'">
-                    <label class="control-label col-md-2">password: </label>
+                    <label class="control-label col-md-2" th:text="#{user.password}">password: </label>
                     <div class="col-md-10">
                         <input type="password" th:field="*{password}" class="form-control"/>
                         <span class="help-inline" th:errors="*{password}">[error]</span>
                     </div>
-                </div>
-                <div class="form-group" th:classappend="${#fields.hasErrors('expireDate')} ? 'has-error'">
-                    <label class="control-label col-md-2">expire date: </label>
+                </div>                
+                <div class="form-group" th:classappend="${#fields.hasErrors('roles')} ? 'has-error'">
+                    <span class="help-inline" th:errors="*{roles}">[error]</span>
+               </div>                
+               <div class="form-group" th:each="role, roleStat : ${roles}" th:classappend="${#fields.hasErrors('roles')} ? 'has-error'">
+                    <div class="col-md-offset-2 col-md-1">
+                        <div class="checkbox">
+                        <label>
+                            <input type="checkbox" th:field="*{roles}" th:value="${role.id}"/>
+                            <span th:text="${role.name}">admin</span>
+                        </label>
+                        </div>
+                    </div>
+               </div>                
+               <div class="form-group" th:classappend="${#fields.hasErrors('expireDate')} ? 'has-error'">
+                    <label class="control-label col-md-2" th:text="#{user.expireDate}">expire date: </label>
                     <div class="col-md-10">
                         <input type="text" th:field="*{expireDate}" class="form-control" th:errorclass="fieldError"/>
                         <span class="help-inline" th:errors="*{expireDate}">[error]</span>
+    <script type="text/javascript" th:inline="javascript">
+                Calendar.setup({
+                    inputField     :    "expireDate",   // id of the input field
+                    button         :    "expireDate",   // trigger for the calendar (button ID)
+                    showsTime      : true,     
+                    ifFormat       :    "%Y/%m/%d %H:%M:%S",       // format of the input field
+                    dateType       :    [[${#locale.language == 'fa'} ? 'jalali' : 'gregorian']],
+                    weekNumbers    : false
+                });
+            </script>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input  type="submit" value="submit" class="btn btn-primary" />
+                        <input  type="submit" value="submit" class="btn btn-primary" th:value="#{button.submit}" />
                     </div>
                 </div>
         </form>
