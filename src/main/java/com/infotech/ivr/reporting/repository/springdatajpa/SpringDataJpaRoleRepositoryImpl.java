@@ -23,7 +23,7 @@ public class SpringDataJpaRoleRepositoryImpl {
      *
      */
     public List<Role> findAllPageable(int currentPage, int pageSize) {
-        return em.createQuery("SELECT role from Role role", Role.class)
+        return em.createQuery("SELECT role from Role role LEFT JOIN FETCH role.permissions", Role.class)
                     .setFirstResult((currentPage-1) * pageSize)
                     .setMaxResults(pageSize)
                     .getResultList();

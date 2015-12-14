@@ -6,4 +6,15 @@
     <bean id="productService" name="productService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.infotech.ivr.reporting.service.ProductService"/>
     </bean>
+    <bean id="userService" name="userService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.infotech.ivr.reporting.service.UserService"/>
+    </bean>
+    <bean id="roleService" name="roleService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.infotech.ivr.reporting.service.RoleService"/>
+    </bean>
+
+    <!--  required for thymeleaf security dialect expression, spring security is bypassed -->
+    <bean id="webSecurityExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+    </bean>
+
 </beans>

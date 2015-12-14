@@ -22,6 +22,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -72,7 +75,12 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests  {
     @BeforeMethod(alwaysRun = true)
     public void setup() {
         Mockito.reset(productService);
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc = MockMvcBuilders
+                    .webAppContextSetup(webApplicationContext)
+                    .build();
+        // to bypass thymeleaf security dialect expression processing, no spring security
+        Authentication authentication = new UsernamePasswordAuthenticationToken("user", null);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     @Test

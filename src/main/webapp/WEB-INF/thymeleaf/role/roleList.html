@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta th:include="fragments/headTag :: headTag" th:remove="tag"/>
+</head>
+
+<body th:style="${#locale.language == 'fa'}? 'font-family: yekan' : 'font-family: tahoma'">
+    <div class="container" th:dir="${#locale.language == 'fa'}? 'rtl'">
+        <div th:include="/fragments/header :: header">
+        </div>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th th:text="#{role.name}">role</th>
+                <th th:text="#{role.permission}">permission</th>
+            </tr>
+            <tr th:each="role : ${roles}">
+                <td><a href="#" th:href="@{|/roles/${role.id}|}" th:text="${role.name}">role</a></td>
+                <td th:text="${role.permissions}">permission</td>
+            </tr>
+        </table>
+        <!--  pager  -->
+        <div th:replace="/fragments/pager :: pager(path='roles', page=${page}, pageSize=${pageSize})"></div>
+
+        <div th:if="${#authorization.expression('hasAuthority(''role_create_view'')')}">
+            <a href="#" th:href="@{/roles/create}" th:text="#{role.add.message}">add new role</a>
+        </div>
+   </div>
+</body>
+</html>
+
