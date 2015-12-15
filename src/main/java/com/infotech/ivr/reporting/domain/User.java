@@ -16,8 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import static org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -29,16 +27,6 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Sevak Gharibian
  *
  */
-@NamedQueries({
-    @NamedQuery(
-        name = "findByUsername",
-        query = "SELECT user FROM User user LEFT JOIN FETCH user.roles r LEFT JOIN FETCH r.permissions p WHERE user.username = :username"
-    ),
-    @NamedQuery(
-        name = "findById",
-        query = "SELECT user FROM User user LEFT JOIN FETCH user.roles WHERE user.id = :id"
-    )
-})
 @Entity
 @Table(name="user")
 public class User {

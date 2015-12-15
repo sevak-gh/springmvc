@@ -76,8 +76,10 @@ public class UserController {
     }
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
-    public String processCreateForm(@Valid User user, BindingResult result) {
+    public String processCreateForm(@Valid User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            List<Role> roles = roleService.findAll();
+            model.addAttribute("roles", roles);            
             return "user/userCreateUpdate";
         } else {
             userService.save(user);
@@ -95,8 +97,10 @@ public class UserController {
     }
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
-    public String processUpdateForm(User user, BindingResult result) {
+    public String processUpdateForm(User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            List<Role> roles = roleService.findAll();
+            model.addAttribute("roles", roles);            
             return "user/userCreateUpdate";
         } else {
             userService.save(user);

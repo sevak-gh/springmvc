@@ -1,8 +1,10 @@
 package com.infotech.ivr.reporting.web.controller;
 
 import com.infotech.ivr.reporting.domain.Role;
+import com.infotech.ivr.reporting.domain.Permission;
 import com.infotech.ivr.reporting.service.RoleService;
-import com.infotech.ivr.reporting.web.conversion.CustomRoleEditor;
+import com.infotech.ivr.reporting.service.PermissionService;
+import com.infotech.ivr.reporting.web.conversion.CustomPermissionEditor;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -37,18 +39,18 @@ public class RoleController {
     private static final Logger LOG = LoggerFactory.getLogger(RoleController.class);
 
     private final RoleService roleService;
+    private final PermissionService permissionService;
 
     @Autowired
-    public RoleController(RoleService roleService) {
+    public RoleController(RoleService roleService, PermissionService permissionService) {
         this.roleService = roleService;
+        this.permissionService = permissionService;
     }
 
-    /*
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Role.class, new CustomRoleEditor());
+        binder.registerCustomEditor(Permission.class, new CustomPermissionEditor());
     }
-    */
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(@RequestParam(value="page", defaultValue="1") int page,
@@ -64,13 +66,12 @@ public class RoleController {
         return "role/roleList";
     }
 
-    /*
     @RequestMapping(value="/create", method = RequestMethod.GET)
     public String initCreateForm(Model model) {
         Role role = new Role();
-        List<Role> roles = roleService.findAll();
+        List<Permission> permissions = permissionService.findAll();
         model.addAttribute("role", role);
-        model.addAttribute("roles", roles);
+        model.addAttribute("permissions", permissions);
         return "role/roleCreateUpdate";
     }
 
@@ -86,10 +87,10 @@ public class RoleController {
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
     public String initUpdateForm(@PathVariable("id") long id, Model model) {
-        List<Role> roles = roleService.findAll();
+        List<Permission> permissions = permissionService.findAll();
         Role role = roleService.findById(id);
         model.addAttribute("role", role);
-        model.addAttribute("roles", roles);
+        model.addAttribute("permissions", permissions);
         return "role/roleCreateUpdate";
     }
 
@@ -102,5 +103,4 @@ public class RoleController {
             return "redirect:/roles";
         }
     }
-    */
 }

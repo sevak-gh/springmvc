@@ -48,4 +48,28 @@ public class Permission {
     public String toString() {
         return String.format("Permission[id:%d, name:%s]", id, name);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof Permission)) {
+            return false;
+        }        
+        Permission permission = (Permission)other; 
+        if (this.id == permission.id) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        if (id != null) {
+            result = 31 * result + id.hashCode();
+        }
+        return result;
+    }
 }

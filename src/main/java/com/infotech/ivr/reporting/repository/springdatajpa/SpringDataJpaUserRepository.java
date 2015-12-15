@@ -15,10 +15,10 @@ import org.springframework.data.repository.query.Param;
 public interface SpringDataJpaUserRepository extends UserRepository, Repository<User, Long> {
 
     @Override
-    @Query(name="findByUsername")
+    @Query("SELECT user FROM User user LEFT JOIN FETCH user.roles r LEFT JOIN FETCH r.permissions p WHERE user.username = :username")
     User findByUsername(@Param("username") String username);
     
     @Override
-    @Query(name="findById")
+    @Query("SELECT user FROM User user LEFT JOIN FETCH user.roles WHERE user.id = :id")
     User findById(@Param("id") long id);
 }
