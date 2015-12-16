@@ -14,7 +14,8 @@
         <br/>
         <p th:text="${#locale}">
         </p>
-        <form action="#" th:action="(${role.id} != null) ? @{|/roles/${role.id}|} : @{/roles/create}" th:object="${role}" class="form-horizontal" method="post">
+        <form action="#" th:action="(${role.id} != null) ? @{|/roles/${role.id}|} : @{/roles/create}" 
+                         th:object="${role}" class="form-horizontal" method="post">
                 <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error'">
                     <label class="control-label col-md-2" th:text="#{role.name}">name: </label>
                     <div class="col-md-10">
@@ -25,8 +26,11 @@
                 <div class="form-group" th:classappend="${#fields.hasErrors('permissions')} ? 'has-error'">
                     <span class="help-inline" th:errors="*{permissions}">[error]</span>
                </div>                
-               <div class="form-group" th:each="permission, permissionStat : ${permissions}" th:classappend="${#fields.hasErrors('permissions')} ? 'has-error'">
-                    <div class="col-md-offset-2 col-md-1">
+
+               <!-- 
+               <div class="form-group" th:each="permission, permissionStat : ${permissions}" 
+                    th:classappend="${#fields.hasErrors('permissions')} ? 'has-error'">
+                    <div class="col-md-2" th:classappend="col-md-offset- + ${2+((permissionStat.index%4)*2)}">
                         <div class="checkbox">
                         <label>
                             <input type="checkbox" th:field="*{permissions}" th:value="${permission.id}"/>
@@ -35,6 +39,24 @@
                         </div>
                     </div>
                </div>                
+               --> 
+               <div class="form-group" th:each="i : ${#numbers.sequence(1, ((#lists.size(permissions)/4)+1))}"> 
+                     <div th:each="j : ${#numbers.sequence(1, 4)}"
+                          th:with="index=${((i-1)*4)+j-1}" 
+                          th:if="${index lt #lists.size(permissions)}"
+                          th:class="'col-md-2'" th:classappend="${j == 1}? 'col-md-offset-2'"> 
+                        <div class="checkbox">
+                        <label>
+                            <input type="checkbox" 
+                                   th:if="${index lt #lists.size(permissions)}"
+                                   th:field="*{permissions}" 
+                                   th:value="${permissions[__${index}__].id}"/>
+                            <span th:if="${index lt #lists.size(permissions)}" th:text="${permissions[__${index}__].name}">admin</span>
+                        </label>
+                        </div>
+                    </div>
+              </div>
+
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input  type="submit" value="submit" class="btn btn-primary" th:value="#{button.submit}" />
