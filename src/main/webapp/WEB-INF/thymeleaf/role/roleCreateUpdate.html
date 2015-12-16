@@ -26,20 +26,6 @@
                 <div class="form-group" th:classappend="${#fields.hasErrors('permissions')} ? 'has-error'">
                     <span class="help-inline" th:errors="*{permissions}">[error]</span>
                </div>                
-
-               <!-- 
-               <div class="form-group" th:each="permission, permissionStat : ${permissions}" 
-                    th:classappend="${#fields.hasErrors('permissions')} ? 'has-error'">
-                    <div class="col-md-2" th:classappend="col-md-offset- + ${2+((permissionStat.index%4)*2)}">
-                        <div class="checkbox">
-                        <label>
-                            <input type="checkbox" th:field="*{permissions}" th:value="${permission.id}"/>
-                            <span th:text="${permission.name}">admin</span>
-                        </label>
-                        </div>
-                    </div>
-               </div>                
-               --> 
                <div class="form-group" th:each="i : ${#numbers.sequence(1, ((#lists.size(permissions)/4)+1))}"> 
                      <div th:each="j : ${#numbers.sequence(1, 4)}"
                           th:with="index=${((i-1)*4)+j-1}" 
@@ -56,7 +42,6 @@
                         </div>
                     </div>
               </div>
-
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input  type="submit" value="submit" class="btn btn-primary" th:value="#{button.submit}" />
