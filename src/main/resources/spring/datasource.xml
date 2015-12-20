@@ -9,12 +9,14 @@
 
     <context:property-placeholder location="classpath:spring/datasource.properties" ignore-unresolvable="true"/>
 
+    <!--
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
    </bean>
+    -->
 
 <!--    
    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
@@ -28,6 +30,26 @@
         <property name="minIdle" value="${connectionpool.minIdle}" />
     </bean>
 -->
+
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="poolName" value="springHikariCP" />
+        <property name="dataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlDataSource"/>
+        <property name="connectionTimeout" value="30000" />
+        <property name="idleTimeout" value="30000" />
+        <property name="maxLifetime" value="60000" />
+        <property name="minimumIdle" value="5" />
+        <property name="maximumPoolSize" value="20" />
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="url">${jdbc.url}</prop>
+                <prop key="user">${jdbc.username}</prop>
+                <prop key="password">${jdbc.password}</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfig" />
+    </bean>
 
 </beans>
 
