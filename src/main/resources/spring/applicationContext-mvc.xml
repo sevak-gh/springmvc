@@ -107,7 +107,7 @@
         <property name="suffix" value=".html" />
         <property name="templateMode" value="HTML5" />
         <property name="characterEncoding" value="UTF-8" />
-        <property name="cacheable" value="false" />
+        <property name="cacheable" value="true" />
     </bean>
     <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
         <property name="templateResolver" ref="templateResolver" />
@@ -130,6 +130,10 @@
     <oxm:jaxb2-marshaller id="marshaller">
         <oxm:class-to-be-bound name="com.infotech.ivr.reporting.domain.Product"/>
     </oxm:jaxb2-marshaller>
+
+    <mvc:interceptors>
+        <bean class= "com.infotech.ivr.reporting.web.interceptor.RequestTimeLogger" />
+    </mvc:interceptors>    
 
 </beans>
 

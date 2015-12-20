@@ -7,7 +7,7 @@
 </head>
 
 <body th:style="${#locale.language == 'fa'}? 'font-family: yekan' : 'font-family: tahoma'">
-    <div class="container" th:dir="${#locale.language == 'fa'}? 'rtl'">
+    <div class="container-fluid" th:dir="${#locale.language == 'fa'}? 'rtl'">
         <div th:include="/fragments/header :: header">
         </div>
         <table class="table table-bordered table-striped">
