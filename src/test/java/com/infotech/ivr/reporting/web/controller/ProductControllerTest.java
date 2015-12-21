@@ -6,6 +6,7 @@ import com.infotech.ivr.reporting.service.ProductService;
 import java.util.Arrays;
 import java.util.List;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,6 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,6 +42,7 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasSize;
@@ -84,7 +88,7 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests  {
     }
 
     @Test
-    public void getProductsShouldGetProductsAndReturnStatusOKAndAddModelAndReturnView() throws Exception {
+    public void shouldReturnProductsListAndStatusOK() throws Exception {
         // arrange
         Product p1 = new Product();
         p1.setName("book");
@@ -95,38 +99,96 @@ public class ProductControllerTest extends AbstractTestNGSpringContextTests  {
         when(productService.findAllPageable(anyInt(), anyInt())).thenReturn(Arrays.asList(p1, p2));
         long count = 2;
         when(productService.getCount()).thenReturn(count);
+        MockHttpServletRequestBuilder request = get("/products");
 
-        // act, assert
-        mockMvc.perform(get("/products"))
-            .andExpect(status().isOk())
-            .andExpect(view().name("product/productList"))
-            .andExpect(model().attribute("products", any(List.class)))
-            .andExpect(model().attribute("products", hasSize(2)))
-            .andExpect(model().attribute("count", 2L))
-            .andExpect(model().attribute("page", 1))
-            .andExpect(model().attribute("pageSize", 10))
-            .andDo(log());
+        // act
+        ResultActions response = mockMvc.perform(request);
+
+        // assert
+        response.andExpect(status().isOk())
+                .andExpect(view().name("product/productList"))
+                .andExpect(model().attribute("products", any(List.class)))
+                .andExpect(model().attribute("products", hasSize((int)count)))
+                .andExpect(model().attribute("count", count))
+                .andExpect(model().attribute("page", 1))
+                .andExpect(model().attribute("pageSize", 10))
+                .andDo(log());
     }
 
     @Test
-    public void postProductsCreateShouldCreateProductAndReturnStatusRedirectAndReturnRedirectView() throws Exception {
-        // arrange, act, assert
-        mockMvc.perform(post("/products/create")
-                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                            .param("name", "book")
-                            .param("price", "55.56")
-                            .param("dateTime", "2015/08/27 17:05:05")
-                        )
-            .andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/products"))
-            .andDo(log());
+    public void shouldReturnProductByIdAndStatusOK() throws Exception {
+        // arrange
+        Product p1 = new Product();
+        p1.setId(1);
+        p1.setName("book");
+        p1.setPrice(new BigDecimal(215.33));
+        when(productService.findById(anyLong())).thenReturn(p1);
+        MockHttpServletRequestBuilder request = get("/products/1");
 
+        // act
+        ResultActions response = mockMvc.perform(request);
+
+        // assert
+        response.andExpect(status().isOk())
+                .andExpect(view().name("product/productCreateUpdate"))
+                .andExpect(model().attribute("product", p1))
+                .andDo(log());
+    }
+
+    @Test
+    public void shouldCreateProductAndRedirect() throws Exception {
+        // arrange
+        String name = "book";
+        String price = "215.33";
+        String dateTime = "2015/08/27 17:05:05";
+        MockHttpServletRequestBuilder request = post("/products/create")
+                                                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                                    .param("name", name)
+                                                    .param("price", price)
+                                                    .param("dateTime", dateTime);
+
+        // act
+        ResultActions response = mockMvc.perform(request);
+
+        // assert
+        response.andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/products"))
+                .andDo(log());
         ArgumentCaptor<Product> productCaptor = ArgumentCaptor.forClass(Product.class);
         verify(productService, times(1)).save(productCaptor.capture());
         verifyNoMoreInteractions(productService);
         Product product = productCaptor.getValue();
-        assertThat(product.getName(), is("book"));
-        assertThat(product.getPrice(), is(new BigDecimal("55.56")));
+        assertThat(product.getName(), is(name));
+        assertThat(product.getPrice(), is(new BigDecimal(price)));
+    }
+
+    @Test
+    public void shouldUpdateProductAndRedirect() throws Exception {
+        // arrange        
+        String id = "1";
+        String name = "book";
+        String price = "215.33";
+        String dateTime = "2015/08/27 17:05:05";
+        MockHttpServletRequestBuilder request = post("/products/" + id)
+                                                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                                    .param("name", name)
+                                                    .param("price", price)
+                                                    .param("dateTime", dateTime);
+
+        // act
+        ResultActions response = mockMvc.perform(request);
+
+        // assert
+        response.andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/products"))
+                .andDo(log());
+        ArgumentCaptor<Product> productCaptor = ArgumentCaptor.forClass(Product.class);
+        verify(productService, times(1)).save(productCaptor.capture());
+        verifyNoMoreInteractions(productService);
+        Product product = productCaptor.getValue();
+        assertThat(product.getName(), is(name));
+        assertThat(product.getId(), is(Long.valueOf(id)));
+        assertThat(product.getPrice(), is(new BigDecimal(price)));
     }
 }
 

@@ -15,6 +15,9 @@
     <bean id="permissionService" name="permissionService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.infotech.ivr.reporting.service.PermissionService"/>
     </bean>
+    <bean id="UserService" name="UserService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.springframework.security.core.userdetails.UserDetailsService"/>
+    </bean>
 
     <!--  required for thymeleaf security dialect expression, spring security is bypassed -->
     <bean id="webSecurityExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
