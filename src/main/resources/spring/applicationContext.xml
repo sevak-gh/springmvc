@@ -26,6 +26,7 @@
                                           com.infotech.ivr.reporting.util" />
 
     <tx:annotation-driven />
+
     <aop:aspectj-autoproxy />
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -41,6 +42,7 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
+
     <jpa:repositories base-package="com.infotech.ivr.reporting.repository.springdatajpa"/>
 
 </beans>

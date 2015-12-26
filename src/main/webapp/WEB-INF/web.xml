@@ -13,7 +13,11 @@
         </servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:spring/applicationContext-mvc.xml</param-value>
+            <!-- web context loaded from root context loader, this makes all beans in one context
+                 having all beans in one context helps for aspects such as security being applied 
+                 application wide, in other words we can have @PreAuthorize for controllers as well as services   
+            -->            
+            <param-value></param-value>
         </init-param>
     </servlet> 
     <servlet-mapping>
@@ -23,7 +27,11 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/applicationContext.xml, classpath:spring/applicationContext-security.xml</param-value>
+        <param-value>
+                     classpath:spring/applicationContext.xml, 
+                     classpath:spring/applicationContext-security.xml, 
+                     classpath:spring/applicationContext-mvc.xml
+        </param-value>
     </context-param>
  
     <!-- Register Spring Listener -->

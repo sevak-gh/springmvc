@@ -39,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
     
     @Override
     @Transactional(readOnly = true)
+    //@PreAuthorize("hasAnyAuthority('product_list_view')")
     public List<Product> findAllPageable(int currentPage, int pageSize) {
         return productRepository.findAllPageable(currentPage, pageSize);
     }

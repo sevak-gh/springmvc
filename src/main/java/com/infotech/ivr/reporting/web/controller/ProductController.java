@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +49,7 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    //@PreAuthorize("hasAnyAuthority('product_list_view')")
     public String list(@RequestParam(value="page", defaultValue="1") int page,
                        @RequestParam(value="pageSize", defaultValue="10") int pageSize,
                        Model model) {
@@ -61,7 +63,7 @@ public class ProductController {
         return "product/productList";
     }
 
-    @RequestMapping(value="/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String initCreateForm(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);

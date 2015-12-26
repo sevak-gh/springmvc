@@ -20,6 +20,7 @@ public class MethodLogger {
 
     // around execution any public method
     @Around("execution(public * com.infotech.ivr.reporting.service..*.*(..))"
+            + " || execution(public * com.infotech.ivr.reporting.web.controller..*.*(..))"
             + " || execution(public * com.infotech.ivr.reporting.repository..*.*(..))")
     public Object logMethodEntry(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
