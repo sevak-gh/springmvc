@@ -22,7 +22,9 @@
         <intercept-url pattern="/" access="permitAll" requires-channel="https"/>
         <intercept-url pattern="/signin" access="permitAll" requires-channel="https"/>
         <intercept-url pattern="/signout" access="permitAll" requires-channel="https"/>
+        <!-- authorities applied as @PreAuthorize controller handler methods, may be applied on services also  -->
         <!--  product permissions   -->
+        <!--
         <intercept-url pattern="/products" method="GET" access="hasAuthority('product_list_view')" requires-channel="https" />
         <intercept-url pattern="/products/create" method="GET" access="hasAuthority('product_create_view')" />
         <intercept-url pattern="/products/create" method="POST" access="hasAuthority('product_create_do')" />
@@ -30,7 +32,9 @@
         <intercept-url pattern="/products/report**" access="hasAuthority('product_report_view')" />
         <intercept-url pattern="/products/**" method="GET" access="hasAuthority('product_update_view')" />
         <intercept-url pattern="/products/**" method="POST" access="hasAuthority('product_update_do')" />
+        -->
          <!--  user permissions   -->
+        <!--            
         <intercept-url pattern="/users" method="GET" access="hasAuthority('user_list_view')" />
         <intercept-url pattern="/users/create" method="GET" access="hasAuthority('user_create_view')" />
         <intercept-url pattern="/users/create" method="POST" access="hasAuthority('user_create_do')" />
@@ -38,7 +42,9 @@
         <intercept-url pattern="/users/report**" access="hasAuthority('user_report_view')" />
         <intercept-url pattern="/users/**" method="GET" access="hasAuthority('user_update_view')" />
         <intercept-url pattern="/users/**" method="POST" access="hasAuthority('user_update_do')" />
+        -->
         <!--  role permissions   -->
+        <!--
         <intercept-url pattern="/roles" method="GET" access="hasAuthority('role_list_view')" />
         <intercept-url pattern="/roles/create" method="GET" access="hasAuthority('role_create_view')" />
         <intercept-url pattern="/roles/create" method="POST" access="hasAuthority('role_create_do')" />
@@ -46,8 +52,9 @@
         <intercept-url pattern="/roles/report**" access="hasAuthority('role_report_view')" />
         <intercept-url pattern="/roles/**" method="GET" access="hasAuthority('role_update_view')" />
         <intercept-url pattern="/roles/**" method="POST" access="hasAuthority('role_update_do')" />
+        -->
         <!--    default, accessible for authenticated users  -->
-        <intercept-url pattern="/**" access="authenticated" />
+        <intercept-url pattern="/**" access="authenticated" requires-channel="https" />
 
         <form-login login-page="/signin" 
                     login-processing-url="/signin"

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +54,7 @@ public class RoleController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('role_list_view')")
     public String list(@RequestParam(value="page", defaultValue="1") int page,
                        @RequestParam(value="pageSize", defaultValue="10") int pageSize,
                        Model model) {
@@ -67,6 +69,7 @@ public class RoleController {
     }
 
     @RequestMapping(value="/create", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('role_create_view')")
     public String initCreateForm(Model model) {
         Role role = new Role();
         List<Permission> permissions = permissionService.findAll();
@@ -76,6 +79,7 @@ public class RoleController {
     }
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyAuthority('role_create_do')")
     public String processCreateForm(@Valid Role role, BindingResult result) {
         if (result.hasErrors()) {
             return "role/roleCreateUpdate";
@@ -86,6 +90,7 @@ public class RoleController {
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('role_update_view')")
     public String initUpdateForm(@PathVariable("id") long id, Model model) {
         List<Permission> permissions = permissionService.findAll();
         Role role = roleService.findById(id);
@@ -95,6 +100,7 @@ public class RoleController {
     }
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
+    @PreAuthorize("hasAnyAuthority('role_update_do')")
     public String processUpdateForm(Role role, BindingResult result) {
         if (result.hasErrors()) {
             return "role/roleCreateUpdate";

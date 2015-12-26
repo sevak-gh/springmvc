@@ -49,7 +49,7 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    //@PreAuthorize("hasAnyAuthority('product_list_view')")
+    @PreAuthorize("hasAnyAuthority('product_list_view')")
     public String list(@RequestParam(value="page", defaultValue="1") int page,
                        @RequestParam(value="pageSize", defaultValue="10") int pageSize,
                        Model model) {
@@ -64,6 +64,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('product_create_view')")
     public String initCreateForm(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
@@ -71,6 +72,7 @@ public class ProductController {
     }
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyAuthority('product_create_do')")
     public String processCreateForm(@Valid Product product, BindingResult result) {
         if (result.hasErrors()) {
             return "product/productCreateUpdate";
@@ -81,6 +83,7 @@ public class ProductController {
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('product_update_view')")
     public String initUpdateForm(@PathVariable("id") long id, Model model) {
         Product product = productService.findById(id);
         model.addAttribute("product", product);
@@ -88,6 +91,7 @@ public class ProductController {
     }
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
+    @PreAuthorize("hasAnyAuthority('product_update_do')")
     public String processUpdateForm(@Valid Product product, BindingResult result) {
         if (result.hasErrors()) {
             return "product/productCreateUpdate";
@@ -98,6 +102,7 @@ public class ProductController {
     }
 
     @RequestMapping(value="/report", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('product_report_view')")
     public String report(Model model) {
         ProductReportFilter filter = new ProductReportFilter();
         List<Product> products = productService.reportPageable(filter, "dateTime", false, 1, DEFAULT_PAGE_SIZE);
@@ -113,6 +118,7 @@ public class ProductController {
     }
 
     @RequestMapping(value="/report", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyAuthority('product_report_view')")
     public String report(ProductReportFilter filter, BindingResult result, 
                          @RequestParam(value="page", defaultValue="1") int page,
                          @RequestParam(value="pageSize", defaultValue="10") int pageSize,
@@ -131,6 +137,7 @@ public class ProductController {
     }
 
     @RequestMapping(value="/reportExport", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyAuthority('product_report_export')")
     public String reportExport(ProductReportFilter filter, BindingResult result, 
                          @RequestParam(value="sortField", required=false, defaultValue="dateTime") String sortField,
                          @RequestParam(value="isSortDirectionAsc", defaultValue="true") boolean isSortDirectionAsc,

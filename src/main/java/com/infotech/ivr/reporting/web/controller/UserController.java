@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +54,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('user_list_view')")
     public String list(@RequestParam(value="page", defaultValue="1") int page,
                        @RequestParam(value="pageSize", defaultValue="10") int pageSize,
                        Model model) {
@@ -67,6 +69,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/create", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('user_create_view')")
     public String initCreateForm(Model model) {
         User user = new User();
         List<Role> roles = roleService.findAll();
@@ -76,6 +79,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyAuthority('user_create_do')")
     public String processCreateForm(@Valid User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
             List<Role> roles = roleService.findAll();
@@ -88,6 +92,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('user_update_view')")
     public String initUpdateForm(@PathVariable("id") long id, Model model) {
         List<Role> roles = roleService.findAll();
         User user = userService.findById(id);
@@ -97,6 +102,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
+    @PreAuthorize("hasAnyAuthority('user_update_do')")
     public String processUpdateForm(User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
             List<Role> roles = roleService.findAll();
