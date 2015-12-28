@@ -8,11 +8,12 @@
 
 <body th:style="${#locale.language == 'fa'}? 'font-family: yekan' : 'font-family: tahoma'">
     <div class="container" th:dir="${#locale.language == 'fa'}? 'rtl'">
-        <div th:include="/fragments/header :: header">
-        </div>
-        <br/>
-        <p th:text="${#locale}">
-        </p>
+        <div th:include="/fragments/header :: header"></div>
+        <p th:text="${#locale}"></p>        
+
+                <div class="alert alert-danger" th:if="${error != null}">
+                    <span th:text="${error}">error</span>
+                </div>
 
         <form action="signin" class="form-horizontal" method="post">
                 <div class="form-group">

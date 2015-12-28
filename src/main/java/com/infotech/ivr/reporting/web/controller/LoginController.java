@@ -32,6 +32,7 @@ public class LoginController {
 
     @RequestMapping(value = "/signin", method = RequestMethod.GET)
     public String signin(@RequestParam(value="error", required=false) String error, Model model) {
+        model.addAttribute("error", error);
         return "login/signin";
     }
 

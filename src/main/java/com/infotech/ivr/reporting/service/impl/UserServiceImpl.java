@@ -43,6 +43,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UsernameNotFoundException("username[" + username + "] not found");
         }
 
+        // following could be fetched from database or etc
+        boolean enabled = true;
+        boolean accountNonExpired = true;
+        boolean credentialsNonExpired = true;
+        boolean accountNonLocked = true;
+
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         for (Role role : user.getRoles()){
             for (Permission permission : role.getPermissions()) {
@@ -52,6 +58,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                                                                       user.getPassword(),
+                                                                      enabled,
+                                                                      accountNonExpired,
+                                                                      credentialsNonExpired,
+                                                                      accountNonLocked,    
                                                                       authorities);
     }
 
