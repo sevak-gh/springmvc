@@ -43,6 +43,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UsernameNotFoundException("username[" + username + "] not found");
         }
 
+        // if more logic is required for authentication, 
+        // custom authentication provider should be implemented
         // following could be fetched from database or etc
         boolean enabled = true;
         boolean accountNonExpired = true;

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -80,13 +81,14 @@ public class UserController {
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('user_create_do')")
-    public String processCreateForm(@Valid User user, BindingResult result, Model model) {
+    public String processCreateForm(@Valid User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             List<Role> roles = roleService.findAll();
             model.addAttribute("roles", roles);            
             return "user/userCreateUpdate";
         } else {
             userService.save(user);
+            redirectAttributes.addFlashAttribute("message", String.format("user created: %s", user.toString()));
             return "redirect:/users";
         }
     }
@@ -103,13 +105,14 @@ public class UserController {
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
     @PreAuthorize("hasAnyAuthority('user_update_do')")
-    public String processUpdateForm(User user, BindingResult result, Model model) {
+    public String processUpdateForm(User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             List<Role> roles = roleService.findAll();
             model.addAttribute("roles", roles);            
             return "user/userCreateUpdate";
         } else {
             userService.save(user);
+            redirectAttributes.addFlashAttribute("message", String.format("user updated: %s", user.toString()));
             return "redirect:/users";
         }
     }

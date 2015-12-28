@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -80,11 +81,12 @@ public class RoleController {
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('role_create_do')")
-    public String processCreateForm(@Valid Role role, BindingResult result) {
+    public String processCreateForm(@Valid Role role, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "role/roleCreateUpdate";
         } else {
             roleService.save(role);
+            redirectAttributes.addFlashAttribute("message", String.format("role created: %s", role.toString()));
             return "redirect:/roles";
         }
     }
@@ -101,11 +103,12 @@ public class RoleController {
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
     @PreAuthorize("hasAnyAuthority('role_update_do')")
-    public String processUpdateForm(Role role, BindingResult result) {
+    public String processUpdateForm(Role role, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "role/roleCreateUpdate";
         } else {
             roleService.save(role);
+            redirectAttributes.addFlashAttribute("message", String.format("role updated: %s", role.toString()));
             return "redirect:/roles";
         }
     }

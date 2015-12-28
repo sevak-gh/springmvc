@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -73,11 +74,12 @@ public class ProductController {
 
     @RequestMapping(value="/create", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('product_create_do')")
-    public String processCreateForm(@Valid Product product, BindingResult result) {
+    public String processCreateForm(@Valid Product product, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "product/productCreateUpdate";
         } else {
             productService.save(product);
+            redirectAttributes.addFlashAttribute("message", String.format("product created: %s", product.toString()));
             return "redirect:/products";
         }
     }
@@ -92,11 +94,12 @@ public class ProductController {
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
     @PreAuthorize("hasAnyAuthority('product_update_do')")
-    public String processUpdateForm(@Valid Product product, BindingResult result) {
+    public String processUpdateForm(@Valid Product product, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "product/productCreateUpdate";
         } else {
             productService.save(product);
+            redirectAttributes.addFlashAttribute("message", String.format("product updated: %s", product.toString()));
             return "redirect:/products";
         }
     }
