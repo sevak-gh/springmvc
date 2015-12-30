@@ -38,6 +38,12 @@ $(document).ready(function(){
         $("form").attr("action", [[@{/products/reportExport.}]] + $("#export").val());
         $("form").submit();
     }); 
+
+    $("div.alert a").click(function(){
+        $("div.alert").hide();
+        return false;
+    });
+    
 });
 
 function reload() {
@@ -45,6 +51,12 @@ function reload() {
             type: "POST",
             url: [[@{/products/report.json}]],
             data: $("form").serialize(),
+            error: function(xhr, textStatus, errorThrown) {
+                if ((xhr.status == 401) || (xhr.status == 403)) {       
+                    $("div.alert span").text("your session is expired, please signin and try again");
+                    $("div.alert").show();
+                }
+            },
             success: function (data) {
                           $("table tbody").html("");
                           $.each(data.products, function (index, item) {
@@ -119,7 +131,11 @@ function reload() {
         <div th:include="/fragments/header :: header">
         </div>
        <br/>
-        <form action="#" th:action="@{/products/report}" th:object="${productReportFilter}" class="form-horizontal" method="post">
+        <div class="alert alert-warning" style="display:none">
+            <a href="#" class="close">&times;</a>
+            <span></span>
+        </div>             
+       <form action="#" th:action="@{/products/report}" th:object="${productReportFilter}" class="form-horizontal" method="post">
                 <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error'">
                     <label class="control-label col-md-2" th:text="#{product.name}">name</label>
                     <div class="col-md-10">

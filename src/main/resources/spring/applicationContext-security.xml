@@ -16,6 +16,11 @@
     <http pattern="/resources/**" security="none" />
     <http pattern="/webjars/**" security="none" />
 
+    <!-- for ajax requests  -->
+    <http request-matcher-ref="ajaxRequestMathcer" entry-point-ref="ajaxAuthenticationEntryPoint">
+        <intercept-url pattern="/**" access="authenticated" requires-channel="https" />
+        <csrf disabled="true"/>
+    </http>
         
     <http>
 
@@ -24,6 +29,7 @@
         <intercept-url pattern="/signin" access="permitAll" requires-channel="https"/>
         <intercept-url pattern="/signout" access="permitAll" requires-channel="https"/>
         <!-- authorities applied as @PreAuthorize controller handler methods, may be applied on services also  -->
+        <!--    it is a good practice to not bind security to URLs, because the may be changed more frequently  -->     
         <!--  product permissions   -->
         <!--
         <intercept-url pattern="/products" method="GET" access="hasAuthority('product_list_view')" requires-channel="https" />
@@ -92,6 +98,13 @@
                 <beans:prop key="org.springframework.security.authentication.DisabledException">/signin?error=accountDisabled</beans:prop>
             </beans:props>
         </beans:property>
+    </beans:bean>
+
+    <beans:bean id="ajaxRequestMathcer" 
+                class="com.infotech.ivr.reporting.web.security.AjaxRequestMatcher">
+    </beans:bean>
+    <beans:bean id="ajaxAuthenticationEntryPoint" 
+                class="com.infotech.ivr.reporting.web.security.AjaxAuthenticationEntryPoint">
     </beans:bean>
 
 </beans:beans>
