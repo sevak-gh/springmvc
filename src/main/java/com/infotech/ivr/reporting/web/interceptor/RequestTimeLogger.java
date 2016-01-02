@@ -46,7 +46,7 @@ public class RequestTimeLogger extends HandlerInterceptorAdapter {
         long time = System.currentTimeMillis();
         long startTime = (long)request.getAttribute("startTime");
         long startViewTime = (long)request.getAttribute("startViewTime");
-        LOG.debug("{} --> total:{}, start-view:{}, view-end:{}", 
+        LOG.info("{} --> total:{}, start-view:{}, view-end:{}", 
                     request.getRequestURI(), 
                     time-startTime, 
                     startViewTime - startTime,

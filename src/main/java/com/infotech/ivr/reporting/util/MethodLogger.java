@@ -25,7 +25,7 @@ public class MethodLogger {
     public Object logMethodEntry(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         Object result = joinPoint.proceed();
-        LOG.debug("{}.{}({}): {} in {} msec", joinPoint.getSignature().getDeclaringType().getSimpleName(),
+        LOG.info("{}.{}({}): {} in {} msec", joinPoint.getSignature().getDeclaringType().getSimpleName(),
                   joinPoint.getSignature().getName(),
                   joinPoint.getArgs(),
                   result,
