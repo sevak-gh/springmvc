@@ -3,6 +3,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
  
+    <bean id="auditService" name="auditService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.infotech.ivr.reporting.service.AuditService"/>
+    </bean>
     <bean id="productService" name="productService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.infotech.ivr.reporting.service.ProductService"/>
     </bean>
