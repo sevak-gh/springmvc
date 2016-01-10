@@ -25,6 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,10 +46,12 @@ public class ProductController {
 
 
     private final ProductService productService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, SimpMessagingTemplate messagingTemplate) {
         this.productService = productService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -80,6 +85,7 @@ public class ProductController {
         } else {
             productService.save(product);
             redirectAttributes.addFlashAttribute("message", String.format("product created: %s", product.toString()));
+            messagingTemplate.convertAndSend("/topic/product", String.format("websockettt,product created: %s", product.toString()));
             return "redirect:/products";
         }
     }
@@ -150,4 +156,9 @@ public class ProductController {
         return "product/productReportExport";
     }
 
+    @MessageMapping("/info")
+    //@SendTo("/topic/product")
+    public void info() {
+        LOG.debug("websocket info received!!!");
+    }
 }

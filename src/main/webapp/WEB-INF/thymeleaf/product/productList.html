@@ -4,6 +4,27 @@
 
 <head>
     <meta th:include="fragments/headTag :: headTag" th:remove="tag"/>
+    <script src="resources/js/stomp.js"></script>
+    <script src="resources/js/sockjs-0.3.4.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/
+$(document).ready(function(){
+    connect();        
+    });
+
+    function connect() {
+            var socket = new SockJS("productmsg");
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                stompClient.subscribe("/topic/product", function(message){
+                    $("#message").text(message.body);
+                });
+            });
+        }
+/*]]>*/
+</script>
+
 </head>
 
 <body th:style="${#locale.language == 'fa'}? 'font-family: yekan' : 'font-family: tahoma'">

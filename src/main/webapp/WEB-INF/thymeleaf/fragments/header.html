@@ -14,7 +14,7 @@
     <div th:unless="${#authorization.expression('isAuthenticated()')}" class="pull-right">
         <a href="#" th:href="@{/signin}">signin</a>
     </div>
-    <div th:text="${message}" th:if="${message != null}">message</div>        
+    <div id="message" th:text="${message}">message</div>        
 </div>
 </body>
 </html>

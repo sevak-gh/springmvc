@@ -60,8 +60,15 @@
         <intercept-url pattern="/roles/**" method="GET" access="hasAuthority('role_update_view')" />
         <intercept-url pattern="/roles/**" method="POST" access="hasAuthority('role_update_do')" />
         -->
+
+        <!--    websocket endpoints    -->
+        <intercept-url pattern="/productmsg/**" access="permitAll" />
+        <intercept-url pattern="/app/**" access="permitAll" />
+        <intercept-url pattern="/topic/**" access="permitAll" />
+
         <!--    default, accessible for authenticated users  -->
         <intercept-url pattern="/**" access="authenticated" requires-channel="https" />
+        
 
 
         <form-login login-page="/signin" 

@@ -5,6 +5,7 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xmlns:websocket="http://www.springframework.org/schema/websocket" 
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://jax-ws.dev.java.net/spring/core
@@ -15,6 +16,8 @@
                            http://www.springframework.org/schema/aop/spring-aop.xsd
                            http://www.springframework.org/schema/oxm
                            http://www.springframework.org/schema/oxm/spring-oxm.xsd
+                           http://www.springframework.org/schema/websocket
+                           http://www.springframework.org/schema/websocket/spring-websocket.xsd
                            http://www.springframework.org/schema/mvc
                            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
@@ -133,7 +136,15 @@
 
     <mvc:interceptors>
         <bean class= "com.infotech.ivr.reporting.web.interceptor.RequestTimeLogger" />
-    </mvc:interceptors>    
+    </mvc:interceptors>   
+
+    <!--    websocket       -->
+    <websocket:message-broker application-destination-prefix="/app">
+        <websocket:stomp-endpoint path="/productmsg">
+            <websocket:sockjs/>
+        </websocket:stomp-endpoint>
+        <websocket:simple-broker prefix="/topic"/>
+    </websocket:message-broker> 
 
 </beans>
 
