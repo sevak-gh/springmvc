@@ -10,14 +10,17 @@
             th:src="@{/webjars/jquery/2.1.4/jquery.js}"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" 
           th:src="@{/webjars/bootstrap/3.2.0/js/bootstrap.min.js}"></script>
+    <script src="/ivrreporting/resources/js/stomp.js" th:src="@{/resources/js/stomp.js}"></script>
+    <script src="/ivrreporting/resources/js/sockjs-0.3.4.js" th:src="@{/resources/js/sockjs-0.3.4.js}"></script>
+
    <style th:inline="text"> 
         @font-face {
             font-family: yekan;
-            src: url(/ivrreporting/resources/fonts/BYekan.ttf);
+            src: [[@{/resources/fonts/BYekan.ttf}]];
         }
         @font-face {
             font-family: tahoma;
-            src: url(/ivrreporting/resources/fonts/tahoma.ttf);
+            src: [[@{/resources/fonts/tahoma.ttf}]];
         }
         body {
             font-family: tahoma;

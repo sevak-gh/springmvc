@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 import javax.validation.Valid;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -85,7 +87,7 @@ public class ProductController {
         } else {
             productService.save(product);
             redirectAttributes.addFlashAttribute("message", String.format("product created: %s", product.toString()));
-            messagingTemplate.convertAndSend("/topic/product", String.format("websockettt,product created: %s", product.toString()));
+            sendForAllClients(String.format("websockettt,product created: %s", product.toString()));
             return "redirect:/products";
         }
     }
@@ -100,12 +102,15 @@ public class ProductController {
 
     @RequestMapping(value="/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
     @PreAuthorize("hasAnyAuthority('product_update_do')")
-    public String processUpdateForm(@Valid Product product, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String processUpdateForm(@Valid Product product, BindingResult result, RedirectAttributes redirectAttributes, Principal principal) {
         if (result.hasErrors()) {
             return "product/productCreateUpdate";
         } else {
             productService.save(product);
             redirectAttributes.addFlashAttribute("message", String.format("product updated: %s", product.toString()));
+            if (principal != null) {
+                sendForAClient(principal.getName(), String.format("%s, you updated the product[%d]", principal.getName(), product.getId()));
+            }
             return "redirect:/products";
         }
     }
@@ -156,9 +161,23 @@ public class ProductController {
         return "product/productReportExport";
     }
 
-    @MessageMapping("/info")
-    //@SendTo("/topic/product")
+    @MessageMapping("/msg")
     public void info() {
-        LOG.debug("websocket info received!!!");
+        LOG.debug("websocket-message msg received!!!");
     }
+
+    @MessageMapping("/echo")
+    @SendTo("/topic/data")
+    public String echo(String message) {
+        LOG.debug("websocket-echo received: {}", message);
+        return String.format("hi there: %s", message);
+    }
+
+    private void sendForAllClients(Object object) {
+            messagingTemplate.convertAndSend("/topic/product", object);
+    }        
+
+    private void sendForAClient(String username, Object object) {
+            messagingTemplate.convertAndSendToUser(username, "/queue/product", object);
+    }        
 }

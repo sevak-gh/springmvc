@@ -4,22 +4,36 @@
 
 <head>
     <meta th:include="fragments/headTag :: headTag" th:remove="tag"/>
-    <script src="resources/js/stomp.js"></script>
-    <script src="resources/js/sockjs-0.3.4.js"></script>
 
 <script type="text/javascript" th:inline="javascript">
 /*<![CDATA[*/
+
+ var stompClient = null;
+
 $(document).ready(function(){
     connect();        
+
+    $("a").click(function(){
+        stompClient.send("/app/echo", {}, "link clicking");
     });
 
+ });
+
     function connect() {
-            var socket = new SockJS("productmsg");
+            var socket = new SockJS([[@{/productmsg}]]);
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 stompClient.subscribe("/topic/product", function(message){
                     $("#message").text(message.body);
+                    stompClient.send("/app/msg");
+               });
+                   stompClient.subscribe("/topic/data", function(message){
+                    $("#message").text("someone is doing:" + message.body);
                 });
+                   stompClient.subscribe("/user/queue/product", function(message){
+                    $("#message").text(message.body);
+                });
+
             });
         }
 /*]]>*/
