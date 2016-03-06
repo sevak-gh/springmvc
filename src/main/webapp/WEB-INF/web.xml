@@ -4,7 +4,7 @@
             xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
                                  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-    <display-name>ivr-reporting</display-name>
+    <display-name>springmvc</display-name>
      
     <servlet>
         <servlet-name>dispatcher</servlet-name>

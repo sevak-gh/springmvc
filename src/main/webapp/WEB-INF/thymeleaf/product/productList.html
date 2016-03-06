@@ -30,9 +30,9 @@ $(document).ready(function(){
                    stompClient.subscribe("/topic/data", function(message){
                     $("#message").text("someone is doing:" + message.body);
                 });
-                   stompClient.subscribe("/user/queue/product", function(message){
-                    $("#message").text(message.body);
-                });
+                //   stompClient.subscribe("/user/queue/product", function(message){
+                //    $("#message").text(message.body);
+                //});
 
             });
         }

@@ -22,6 +22,7 @@
         <csrf disabled="true"/>
     </http>
         
+    <!--<http create-session="stateless">-->
     <http>
 
         <!--    accessible for all  -->
@@ -69,17 +70,17 @@
         <!--    default, accessible for authenticated users  -->
         <intercept-url pattern="/**" access="authenticated" requires-channel="https" />
         
-
-
         <form-login login-page="/signin" 
                     login-processing-url="/signin"
                     default-target-url="/"
                     username-parameter="username" 
                     password-parameter="password"   
-                    authentication-failure-handler-ref="authenticationFailureHandler"
-                    authentication-failure-url="/signin?error"/>    <!-- this may be redundant, if failure-handler set  -->
+                    authentication-failure-handler-ref="authenticationFailureHandler"  
+                    authentication-failure-url="/signin?error"/>   <!-- this may be redundant, if failure-handler set  -->
 
         <logout logout-url="/signout" logout-success-url="/" delete-cookies="JSESSIONID" />
+
+        <!--<http-basic />-->
 
         <!--<access-denied-handler error-page="/error" />-->
 
@@ -108,10 +109,10 @@
     </beans:bean>
     
     <beans:bean id="ajaxRequestMathcer" 
-                class="com.infotech.ivr.reporting.web.security.AjaxRequestMatcher">
+                class="com.infotech.springmvc.web.security.AjaxRequestMatcher">
     </beans:bean>
     <beans:bean id="ajaxAuthenticationEntryPoint" 
-                class="com.infotech.ivr.reporting.web.security.AjaxAuthenticationEntryPoint">
+                class="com.infotech.springmvc.web.security.AjaxAuthenticationEntryPoint">
     </beans:bean>
 
 </beans:beans>

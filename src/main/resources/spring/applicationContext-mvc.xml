@@ -22,7 +22,7 @@
                            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- spring mvc anotation processing  -->
-    <context:component-scan base-package="com.infotech.ivr.reporting.web"/>
+    <context:component-scan base-package="com.infotech.springmvc.web"/>
     <mvc:annotation-driven conversion-service="conversionService" />
 
     <!--  static resources   -->
@@ -125,17 +125,17 @@
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="formatters">
             <set>
-                <bean class="com.infotech.ivr.reporting.web.conversion.LocalDateTimeFormatter" />
+                <bean class="com.infotech.springmvc.web.conversion.LocalDateTimeFormatter" />
             </set>
         </property>
     </bean>
 
     <oxm:jaxb2-marshaller id="marshaller">
-        <oxm:class-to-be-bound name="com.infotech.ivr.reporting.domain.Product"/>
+        <oxm:class-to-be-bound name="com.infotech.springmvc.domain.Product"/>
     </oxm:jaxb2-marshaller>
 
     <mvc:interceptors>
-        <bean class= "com.infotech.ivr.reporting.web.interceptor.RequestTimeLogger" />
+        <bean class= "com.infotech.springmvc.web.interceptor.RequestTimeLogger" />
     </mvc:interceptors>   
 
     <!--    websocket       -->

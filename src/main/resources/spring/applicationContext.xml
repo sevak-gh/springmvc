@@ -21,9 +21,9 @@
     <import resource="datasource.xml"/>
     <context:property-placeholder location="classpath:spring/jpa.properties"/>
 
-    <context:component-scan base-package="com.infotech.ivr.reporting.service,
-                                          com.infotech.ivr.reporting.repository,
-                                          com.infotech.ivr.reporting.util" />
+    <context:component-scan base-package="com.infotech.springmvc.service,
+                                          com.infotech.springmvc.repository,
+                                          com.infotech.springmvc.util" />
 
     <tx:annotation-driven />
 
@@ -31,11 +31,11 @@
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.infotech.ivr.reporting.domain" />
+        <property name="packagesToScan" value="com.infotech.springmvc.domain" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="showSql" value="${hibernate.show_sql}" />
-                <property name="databasePlatform" value="${hibernate.dialect}" />
+                <property name="showSql" value="${springmvc.hibernate.show_sql}" />
+                <property name="databasePlatform" value="${springmvc.hibernate.dialect}" />
             </bean>
         </property>
     </bean>      
@@ -43,7 +43,7 @@
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
 
-    <jpa:repositories base-package="com.infotech.ivr.reporting.repository.springdatajpa"/>
+    <jpa:repositories base-package="com.infotech.springmvc.repository.springdatajpa"/>
 
 </beans>
 
