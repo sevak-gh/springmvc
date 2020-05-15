@@ -70,7 +70,7 @@
         <hikari.version>2.4.3</hikari.version>
 
         <!--  jackson   -->
-        <jackson.version>2.9.9</jackson.version>
+        <jackson.version>2.11.0</jackson.version>
 
         <!-- deployment server -->
         <deploy.server.url>http://localhost:8080/manager/text</deploy.server.url>
