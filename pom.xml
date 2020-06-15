@@ -64,7 +64,7 @@
 
         <!-- hibernate -->
         <hibernate.version>4.3.8.Final</hibernate.version>
-        <hibernate.validator.version>5.1.3.Final</hibernate.validator.version>
+        <hibernate.validator.version>5.3.5.Final</hibernate.validator.version>
     
         <!-- connection-pool version  -->
         <hikari.version>2.4.3</hikari.version>
