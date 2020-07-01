@@ -60,7 +60,7 @@
         <slf4j.version>1.7.6</slf4j.version>
 
         <!-- mysql driver -->
-        <mysql.version>5.1.34</mysql.version>
+        <mysql.version>8.0.16</mysql.version>
 
         <!-- hibernate -->
         <hibernate.version>4.3.8.Final</hibernate.version>
