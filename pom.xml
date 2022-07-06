@@ -33,7 +33,7 @@
         <spring.version>4.2.1.RELEASE</spring.version>
         <jaxws-spring.version>1.9</jaxws-spring.version>
         <spring.security.version>4.0.3.RELEASE</spring.security.version>
-        <spring-data-jpa.version>1.9.0.RELEASE</spring-data-jpa.version>
+        <spring-data-jpa.version>1.11.23.RELEASE</spring-data-jpa.version>
 
         <!--    servlet/jstl -->
         <servlet.version>3.1.0</servlet.version>
